@@ -11,6 +11,19 @@ export default function NotebookLayout({
     avatarUrl: "https://github.com/l-furquim.png"
   };
 
+  const notas = [
+     {
+        name: "Nota excluida",
+        id: 1,
+        archived: true
+      },
+      {
+        name: "Nota normal",
+        id: 2,
+        archived: false
+      }
+  ];
+
   if (data === null) {
     redirect("/login");
   };
@@ -18,7 +31,8 @@ export default function NotebookLayout({
   return (
     <SidebarProvider>
       <AppSidebar
-      data={data}      
+      notes={notas}
+      userData={data}  
       />
       <main>
         <SidebarTrigger />

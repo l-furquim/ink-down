@@ -9,11 +9,11 @@ interface ArchivedNotesProps {
 
 export const ArchivedNotes: React.FC<ArchivedNotesProps> = ({ data }) => {
   return (
-    <Collapsible defaultOpen >
+    <Collapsible defaultOpen className="group/collapsible">
       <SidebarMenuItem>
-        <CollapsibleTrigger asChild>
-          <SidebarMenuButton>
-            <Archive size={20} className="text-indigo-600" />
+        <CollapsibleTrigger className="w-full pl-0" asChild>
+          <SidebarMenuButton className="text-lg w-full">
+            <Archive size={40} className="text-indigo-600" />
             Arquivados
           </SidebarMenuButton>
         </CollapsibleTrigger>
