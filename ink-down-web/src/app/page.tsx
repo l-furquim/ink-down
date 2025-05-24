@@ -5,7 +5,7 @@ import { ChartBar, Globe, Linkedin, Palette, Paperclip, Twitter, Users, Youtube 
 
 export default function Home() {
   return (
-    <div className="flex w-full h-full flex-col">
+    <div className="flex w-full h-[350vh] flex-col">
       <div className="flex p-8 w-full items-center">
         <Logo type="dark" />
         <span className="flex space-x-8 pl-8">

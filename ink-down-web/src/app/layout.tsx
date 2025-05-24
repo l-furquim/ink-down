@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${onest.className} w-full h-[350vh] bg-zinc-200`}
+        className={`${onest.className} w-full h-[100vh] bg-zinc-200`}
       >
         {children}
       </body>
