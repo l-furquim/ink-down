@@ -56,7 +56,7 @@ export default function LoginPage() {
         </span>
         <span className="w-80 pt-5 flex space-x-1 items-center text-sm text-muted-foreground">
           Não possui uma conta ?
-          <Link href={"/cadastro"} className="text-indigo-700">
+          <Link href={"/signup"} className="text-indigo-700">
             criar
           </Link>
         </span>
