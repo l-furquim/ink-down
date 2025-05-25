@@ -5,14 +5,17 @@ import { BellDot } from "lucide-react"
 import { ArchivedNotes } from "./archived-notes"
 import type { NoteDataType } from "@/app/@types/note-types"
 import { SearchButton } from "@/app/components/search-button"
+import type { NotificationDataType } from "@/app/@types/notification-types"
+import { Notifications } from "./notifications"
 
 
 interface AppSidebarProps {
   userData: UserDataType,
-  notes: NoteDataType[]
+  notes: NoteDataType[],
+  notifications: NotificationDataType[]
 }
 
-export const AppSidebar: React.FC<AppSidebarProps> = ({ userData, notes }) => {
+export const AppSidebar: React.FC<AppSidebarProps> = ({ userData, notes, notifications }) => {
   console.log("Server side");
 
   return (
@@ -21,10 +24,9 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ userData, notes }) => {
         <SearchButton/>
       </SidebarHeader>
       <SidebarMenu className="w-full flex flex-col space-y-5 pt-10 items-start pl-4">
-        <SidebarMenuItem className="flex items-center gap-2 text-lg">
-          <BellDot size={18} className="text-indigo-600"/>
-          Atividades
-        </SidebarMenuItem>
+        <Notifications
+        notifications={notifications}
+        />
         <ArchivedNotes
         data={notes.filter((n) => n.archived)}
         />

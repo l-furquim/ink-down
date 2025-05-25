@@ -11,6 +11,25 @@ export default function NotebookLayout({
     avatarUrl: "https://github.com/l-furquim.png"
   };
 
+  const notifications = [
+    {
+      title: "Jose favoritou sua nota compartilhada !",
+      id: 1
+    },
+    {
+      title: "Jose favoritou sua nota compartilhada !",
+      id: 2
+    },
+    {
+      title: "Jose favoritou sua nota compartilhada !",
+      id: 3
+    },
+    {
+      title: "Jose favoritou sua nota compartilhada !",
+      id: 4
+    },
+  ]
+
   const notas = [
      {
         name: "Nota excluida",
@@ -21,6 +40,11 @@ export default function NotebookLayout({
         name: "Nota normal",
         id: 2,
         archived: false
+      },
+      {
+        name: "Nota excluida 2",
+        id: 2,
+        archived: true
       }
   ];
 
@@ -31,6 +55,7 @@ export default function NotebookLayout({
   return (
     <SidebarProvider>
       <AppSidebar
+      notifications={notifications}
       notes={notas}
       userData={data}  
       />
