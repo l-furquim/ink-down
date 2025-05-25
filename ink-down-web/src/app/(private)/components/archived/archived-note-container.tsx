@@ -14,7 +14,7 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
-import { SidebarMenuSub, SidebarMenuSubItem } from "@/components/ui/sidebar"
+import { SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from "@/components/ui/sidebar"
 import { ArchiveRestore, ArchiveX } from "lucide-react"
 
 
@@ -23,9 +23,9 @@ export const ArchivedNoteContainer = ({ note }: { note: NoteDataType }) => {
     <ContextMenu>
       <ContextMenuTrigger>
         <SidebarMenuSub key={note.id}>
-          <SidebarMenuSubItem className="hover:cursor-pointer">
+          <SidebarMenuSubButton className="hover:cursor-pointer">
             {note.name}
-          </SidebarMenuSubItem>
+          </SidebarMenuSubButton>
         </SidebarMenuSub>
       </ContextMenuTrigger>
       <ContextMenuContent className="w-50">

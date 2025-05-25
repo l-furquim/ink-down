@@ -31,21 +31,68 @@ export default function NotebookLayout({
   ]
 
   const notas = [
-     {
-        name: "Nota excluida",
-        id: 1,
-        archived: true
+    {
+      name: "Nota excluida",
+      id: 1,
+      archived: true
+    },
+    {
+      name: "Nota normal",
+      id: 9,
+      archived: false
+    },
+    {
+      name: "Nota excluida 2",
+      id: 129,
+      archived: true
+    }
+  ];
+  const dirs = [
+    {
+      name: "Java",
+      id: 1,
+      son: {
+        name: "Spring",
+        id: 190,
+        son: null,
+        notes: [
+          {
+            name: "Spring security",
+            id: 199,
+            archived: false
+          }
+        ]
       },
-      {
-        name: "Nota normal",
-        id: 2,
-        archived: false
-      },
-      {
-        name: "Nota excluida 2",
-        id: 2,
-        archived: true
-      }
+      notes: [
+        {
+          name: "Nota excluida 2",
+          id: 2,
+          archived: false
+        },
+        {
+          name: "Nota excluida 2",
+          id: 3,
+          archived: false
+        }
+      ]
+    },
+    {
+      name: "JavaScript",
+      id: 2,
+      son: null,
+      notes: [
+        {
+          name: "Nota excluida 2",
+          id: 5,
+          archived: false
+        },
+        {
+          name: "Nota excluida 2",
+          id: 10,
+          archived: false
+        }
+      ]
+    },
   ];
 
   if (data === null) {
@@ -55,9 +102,10 @@ export default function NotebookLayout({
   return (
     <SidebarProvider>
       <AppSidebar
-      notifications={notifications}
-      notes={notas}
-      userData={data}  
+        notifications={notifications}
+        notesWithoutDir={notas}
+        directores={dirs}
+        userData={data}
       />
       <main>
         <SidebarTrigger />
