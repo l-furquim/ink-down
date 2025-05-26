@@ -36,8 +36,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ userData, notesWithoutDi
         />
       </SidebarMenu>
       <SidebarGroup>
-        <SidebarGroupLabel>Notas</SidebarGroupLabel>
-        <SidebarGroupContent className="space-y-3">
+        <SidebarGroupLabel className="text-indigo-600">Notas</SidebarGroupLabel>
+        <SidebarGroupContent className="space-y-3 rounded-md pl-3">
           {directores.map((dir) => (
             <Directory
               key={dir.id}

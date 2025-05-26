@@ -5,7 +5,7 @@ export const Note = ({ note, withoutDir }: { note: NoteDataType, withoutDir: boo
   return (
     <>
       {withoutDir ? (
-        <SidebarMenuItem className="pt-2">
+        <SidebarMenuItem className="pt-2 list-none">
           <SidebarMenuButton className="hover:cursor-pointer">
             {note.name}
           </SidebarMenuButton>

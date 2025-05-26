@@ -1,8 +1,13 @@
+"use client"
+
 import type { DirectoryDataType, NoteDataType } from "@/app/@types/note-types"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Sidebar, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from "@/components/ui/sidebar"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { Note } from "./note"
+import { DirectoryContext } from "./directory-context"
+import { useState } from "react"
+import { Input } from "@/components/ui/input"
 
 
 interface DirectoryProps {
@@ -10,33 +15,77 @@ interface DirectoryProps {
 };
 
 export const Directory = ({ dir }: DirectoryProps) => {
+  const [editing, setEditing] = useState(false);
+  const [remove, setRemove] = useState(false);
+
+  const [name, setName] = useState(dir.name);
+  const [dirOpened, setDirOpened] = useState(false);
+
+  console.log("ALo ?");
+  console.log(editing);
+
+  const handleRename = () => {
+    setEditing(true)
+  }
+
+  const handleRenameSubmit = () => {
+    dir.name = name
+    setEditing(false)
+  }
+
+  const onRemove = () => {
+    setRemove(true);
+  }
+
   return (
-    <Collapsible className="group/collapsible">
-      <SidebarMenuItem className="list-none">
-        <CollapsibleTrigger asChild>
-          <SidebarMenuButton>
-            {dir.name}
-            <ChevronUp
-            className="data-[state=open]:rotate-180 transition-transform duration-200"
-            />
-          </SidebarMenuButton>
-        </CollapsibleTrigger>
-      </SidebarMenuItem>
-      <CollapsibleContent className="pl-4 space-y-3 data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-        {dir.son && (
-          <Directory
-            dir={dir.son}
-          />
-        )}
-        {dir.notes.map((note) => (
-          <SidebarMenuSubButton className="list-none hover:cursor-pointer" key={note.id}>
-            <Note
-              withoutDir={false}
-              note={note}
-            />
-          </SidebarMenuSubButton>
-        ))}
-      </CollapsibleContent>
-    </Collapsible>
+    <>
+      {!remove ? (
+        <Collapsible key={dir.id} className="group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90">
+          <DirectoryContext dir={dir} onRename={handleRename} onRemove={onRemove}>
+            <SidebarMenuItem className="list-none">
+              <CollapsibleTrigger asChild>
+                <SidebarMenuButton onClick={() => setDirOpened(!dirOpened)}>
+                  {editing ? (
+                    <Input 
+                      className="h-6 px-1 text-sm"
+                      value={"cucucuc"}
+                      autoFocus
+                      onBlur={handleRenameSubmit}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  ) : (
+                    <>
+                      {name}
+                      <ChevronUp
+                        className={`transition-transform ${dirOpened && "rotate-180 duration-200"}`}
+                      />
+                    </>
+                  )}
+                </SidebarMenuButton>
+              </CollapsibleTrigger>
+            </SidebarMenuItem>
+          </DirectoryContext>
+          <CollapsibleContent className="pl-4 space-y-3 data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
+            {dir.son && (
+              <Directory
+                dir={dir.son}
+              />
+            )}
+            {dir.notes.map((note) => (
+              <SidebarMenuSubButton className="list-none hover:cursor-pointer" key={note.id}>
+                <Note
+                  withoutDir={false}
+                  note={note}
+                />
+              </SidebarMenuSubButton>
+            ))}
+          </CollapsibleContent>
+        </Collapsible>
+      ) : (
+        <span>
+
+        </span>
+      )}
+    </>
   )
 }
