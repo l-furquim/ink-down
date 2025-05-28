@@ -1,10 +1,11 @@
-import fastify from "fastify";
+import fastify, { type FastifyReply, type FastifyRequest } from "fastify";
 import { appRoutes } from "./http/routes";
 import { ZodError } from "zod";
 import { env } from "./env";
 import fastifyJwt from "@fastify/jwt";
+import { verifyJwt } from "./http/middlewares/verify-jwt";
 
-export const app  = fastify();
+export const app = fastify();
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
@@ -13,14 +14,28 @@ app.register(fastifyJwt, {
   },
 });
 
+const publicRoutes = [
+  '/authors/create',
+];
+
 
 appRoutes(app);
 
+app.addHook('preHandler', async (request: FastifyRequest, reply: FastifyReply) => {
+  console.log(request.originalUrl);
+  
+  if (publicRoutes.includes(request.originalUrl ?? request.url)) {
+    return;
+  }
+
+  await verifyJwt(request, reply);
+});
+
 app.setErrorHandler((error, request, reply) => {
-  if(error instanceof ZodError){
+  if (error instanceof ZodError) {
     return reply
       .status(400)
-      .send({ message: "Invalid data ", issues: error.flatten().fieldErrors});
+      .send({ message: "Invalid data ", issues: error.flatten().fieldErrors });
   };
 
   if (env.NODE_ENV !== 'production') {
