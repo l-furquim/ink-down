@@ -1,0 +1,18 @@
+meta {
+  name: Rename Directory
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://localhost:3333/directories/rename
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "directoryId": 3,
+    "newTitle": "Diretorio renomeado"
+  }
+}

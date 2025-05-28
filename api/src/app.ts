@@ -16,6 +16,7 @@ app.register(fastifyJwt, {
 
 const publicRoutes = [
   '/authors/create',
+  '/authors/auth'
 ];
 
 

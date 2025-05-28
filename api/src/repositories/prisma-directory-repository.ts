@@ -4,6 +4,23 @@ import type { DirectoryRepository } from "./directory-repository";
 import { prisma } from "@/lib/prisma";
 
 export class PrismaDirectoryRepository implements DirectoryRepository {
+  async renameDir(directory: Directory): Promise<void> {    
+    await prisma.directory.update({
+      data: {
+        title: directory.title
+      },
+      where: {
+        id: directory.id
+      },
+    });
+  }
+  async delete(id: number): Promise<void> {
+    await prisma.directory.delete({
+      where: {
+        id,
+      }
+    })
+  }
   async findById(id: number): Promise<Directory | null>{
     return await prisma.directory.findFirst({
       where: {
