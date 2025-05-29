@@ -1,6 +1,6 @@
-import { z } from "zod";
+import type { Directory, Note } from "@prisma/client";
 
-export const DirectorySchema = z.object({
-  title: z.string().min(0),
-  
-})
+export type DirectoryWithChildren = Directory & {
+  notes: Note[];
+  childrens: DirectoryWithChildren[];
+};

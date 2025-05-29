@@ -5,4 +5,5 @@ export interface DirectoryRepository {
    findById(id: number): Promise<Directory | null>;
    delete(id: number): Promise<void>;
    renameDir(directory: Directory): Promise<void>;
+   getByAuthor(authorId: string): Promise<Directory[]>;
 }

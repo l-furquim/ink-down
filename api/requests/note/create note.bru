@@ -1,11 +1,11 @@
 meta {
-  name: Create directory
+  name: create note
   type: http
-  seq: 1
+  seq: 12
 }
 
 post {
-  url: http://localhost:3333/directories/create
+  url: http://localhost:3333/notes/create
   body: json
   auth: bearer
 }
@@ -16,8 +16,10 @@ auth:bearer {
 
 body:json {
   {
-    "title": "spring",
-    "authorId": "aaaaaa",
-    "parentId": 5
+    "title":"Como implementar o spring security",
+    "content": "qeqweqweqweqw",
+    "type": "PUBLIC",
+    "icon": "",
+    "dirId": 6
   }
 }
