@@ -1,32 +1,30 @@
 import { DirectoryNotFoundError } from "@/use-cases/errors/directory-not-found-error";
 import { UnnauthorizedDirectoryError } from "@/use-cases/errors/unnauthorized-directory-error";
-import makeRenameDirectory from "@/use-cases/factories/directory/make-rename-directory-use-case";
+import makeMoveDirectoryUseCase from "@/use-cases/factories/directory/make-move-directory-use-case";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-export default async function renameDirectory(
-  req: FastifyRequest, 
+export default async function moveDirectory(
+  req: FastifyRequest<{ Params: { directoryId: string, parentId: string } }>,
   reply: FastifyReply
 ) {
-  const renameDirectorySchema = z.object({
-    directoryId: z.number().int(),
-    newTitle: z.string().min(0),
+
+  const moveDirectorySchema = z.object({
+    directoryId: z.string().transform(Number),
+    parentId: z.string().transform(val => val === "null" ? null : Number(val)).nullable(),
   });
 
-  const { directoryId, newTitle } = renameDirectorySchema.parse(req.body);
-
+  const { parentId, directoryId } = moveDirectorySchema.parse(req.params);
   const authorId = req.user.sub;
 
-  const useCase = makeRenameDirectory();
+  const useCase = makeMoveDirectoryUseCase();
 
   try {
-    await useCase.rename({
-      dirId: directoryId,
-      newTitle,
-      authorId: authorId
+    await useCase.move({
+      directoryId,
+      parentId,
+      authorId
     });
-
-    return reply.status(204).send();
   } catch (e) {
     if (e instanceof DirectoryNotFoundError) {
       return reply.status(404).send({

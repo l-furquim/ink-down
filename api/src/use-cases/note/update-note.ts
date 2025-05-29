@@ -8,6 +8,7 @@ interface UpdateNoteRequest {
   type?: string,
   icon?: string,
   id: string,
+  archived: boolean
 }
 
 export class UpdateNoteUseCase{

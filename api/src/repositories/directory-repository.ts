@@ -6,4 +6,5 @@ export interface DirectoryRepository {
    delete(id: number): Promise<void>;
    renameDir(directory: Directory): Promise<void>;
    getByAuthor(authorId: string): Promise<Directory[]>;
+   moveDir(directory: Directory): Promise<void>;
 }

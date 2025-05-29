@@ -38,7 +38,7 @@ model Note {
 
   reactions   Reaction[]
   Share       Share[]
-  Directory   Directory? @relation(fields: [directoryId], references: [id])
+  Directory   Directory? @relation(fields: [directoryId], references: [id], onDelete: Cascade)
   directoryId Int?
 
   @@map("notes")
@@ -50,7 +50,7 @@ model Directory {
   notes    Note[]
   parentId Int?
 
-  parent    Directory?  @relation("DirectoryHierarchy", fields: [parentId], references: [id])
+  parent    Directory?  @relation("DirectoryHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
   childrens Directory[] @relation("DirectoryHierarchy")
   Author    Author      @relation(fields: [authorId], references: [id])
   authorId  String
