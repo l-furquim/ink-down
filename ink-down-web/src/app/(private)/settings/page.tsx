@@ -1,7 +1,9 @@
 export default function SettingsPage(){
   return (
-    <h1>
-      Settings
-    </h1>
+    <div className="px-4">
+      <h1>
+        settings
+      </h1>
+    </div>
   )
 }

@@ -1,5 +1,5 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "./components/app-side-bar";
+import { AppSidebar } from "../components/app-side-bar";
 import { redirect } from "next/navigation";
 
 export default function NotebookLayout({
@@ -169,7 +169,7 @@ export default function NotebookLayout({
 
   if (data === null) {
     redirect("/login");
-  };
+  }; 
 
   return (
     <SidebarProvider>

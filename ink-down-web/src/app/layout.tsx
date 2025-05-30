@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Onest } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 const onest = Onest({
   subsets: ['latin'], // ou ['latin-ext'], se precisar de mais caracteres
@@ -25,9 +26,16 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${onest.className} w-full h-[100vh] bg-zinc-200`}
+        className={`${onest.className} w-full h-[100vh] bg-zinc-200 dark:bg-zinc-800`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
