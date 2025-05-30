@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button"
-import { Search } from "lucide-react"
+import { Notebook, Search } from "lucide-react"
 import {
   Calculator,
   Calendar,
@@ -23,8 +23,14 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command"
+import type { NoteDataType } from "../@types/note-types";
+import Link from "next/link";
 
-export const SearchButton = () => {
+interface SearchButtonProps {
+  notes: NoteDataType[]
+}
+
+export const SearchButton = ({ notes }: SearchButtonProps) => {
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -58,7 +64,15 @@ export const SearchButton = () => {
         <CommandInput placeholder="Digite o comando..." />
         <CommandList>
           <CommandEmpty>Nenhum resultado.</CommandEmpty>
-          <CommandGroup heading="Sugestões">
+          <CommandGroup heading="Notas">
+            {notes.map((note) => (
+              <CommandItem key={note.id}>
+                <Notebook />
+                <span>{note.name}</span>
+              </CommandItem>
+            ))}
+          </CommandGroup>
+          {/* <CommandGroup heading="Sugestões">
             <CommandItem>
               <Calendar />
               <span>Calendar</span>
@@ -71,14 +85,16 @@ export const SearchButton = () => {
               <Calculator />
               <span>Calculator</span>
             </CommandItem>
-          </CommandGroup>
+          </CommandGroup>*/}
           <CommandSeparator />
           <CommandGroup heading="Configurações">
-            <CommandItem>
-              <User />
-              <span>Conta</span>
-              <CommandShortcut>⌘P</CommandShortcut>
-            </CommandItem>
+            <Link onClick={() => setOpen(false)} href={"/account"} className="hover:cursor-pointer">
+              <CommandItem>
+                <User />
+                <span>Conta</span>
+                <CommandShortcut>⌘P</CommandShortcut>
+              </CommandItem>
+            </Link>
             <CommandItem>
               <PenBox />
               <span>Editor</span>
@@ -89,11 +105,13 @@ export const SearchButton = () => {
               <span>Temas</span>
               <CommandShortcut>⌘S</CommandShortcut>
             </CommandItem>
-            <CommandItem>
-              <Settings />
-              <span>Configurações</span>
-              <CommandShortcut>⌘S</CommandShortcut>
-            </CommandItem>
+            <Link onClick={() => setOpen(false)} href={"/settings"} className="hover:cursor-pointer">
+              <CommandItem>
+                <Settings />
+                <span>Configurações</span>
+                <CommandShortcut>⌘S</CommandShortcut>
+              </CommandItem>
+            </Link>
           </CommandGroup>
         </CommandList>
       </CommandDialog>

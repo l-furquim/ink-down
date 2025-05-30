@@ -52,7 +52,8 @@ export const TagContext = ({
       </ContextMenuTrigger>
 
       <ContextMenuContent
-        className="w-60 z-[999]" // Z-index alto para ficar acima de outros elementos
+        className="w-60 z-[999]"
+        onCloseAutoFocus={(e) => e.preventDefault()} 
         onInteractOutside={(e) => {
           // Impede fechamento durante a edição
           if (!isRenaming) e.preventDefault();

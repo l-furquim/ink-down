@@ -12,6 +12,7 @@ import { ChevronUp, PlusSquare } from "lucide-react"
 import { TagList } from "./notes/tags-list"
 import { NewTagButton } from "./notes/new-tag-button"
 import { UserNav } from "./notes/user-nav"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 
 interface AppSidebarProps {
@@ -22,9 +23,9 @@ interface AppSidebarProps {
   tags: TagsDataType[],
 }
 
-export const AppSidebar: React.FC<AppSidebarProps> = ({ 
-    userData, notesWithoutDir, directores,
-    notifications, tags, 
+export const AppSidebar: React.FC<AppSidebarProps> = ({
+  userData, notesWithoutDir, directores,
+  notifications, tags,
 }) => {
   console.log("Server side");
 
@@ -34,59 +35,61 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   return (
     <Sidebar
     >
-      <SidebarHeader className="pt-5">
-        <SearchButton />
-      </SidebarHeader>
-      <SidebarMenu className="w-full flex flex-col space-y-5 pt-10 items-start pl-4">
+      <SidebarHeader className="pt-5 space-y-2">
+        <SearchButton
+        notes={notesNotArchived}
+        />
         <Notifications
           notifications={notifications}
         />
         <ArchivedNotes
           data={notesArquived}
         />
-      </SidebarMenu>
-      <SidebarGroup>
-        <SidebarGroupLabel className="text-indigo-600">Notas</SidebarGroupLabel>
-        <SidebarGroupContent className="space-y-3 rounded-md pl-3">
-          {directores.map((dir) => (
-            <Directory
-              key={dir.id}
-              dir={dir}
-            />
-          ))}
-          {notesNotArchived.map((note) => (
-            <Note
-              withoutDir={true}
-              key={note.id}
-              note={note}
-            />
-          ))}
-        </SidebarGroupContent>
-      </SidebarGroup>
-      <SidebarGroup>
-        <SidebarGroupContent className="space-y-3 rounded-md ">
-          <Collapsible className="group">
-            <CollapsibleTrigger asChild>
-              <SidebarMenuButton className="pl-0">
-                <SidebarGroupLabel className="text-indigo-600 flex space-x-3">
-                  <span>
-                    Tags
-                  </span>
-                  <NewTagButton
-                    tags={tags}
-                  />
-                  <ChevronUp className="transition-transform duration-200 group-data-[state=open]:rotate-180" />
-                </SidebarGroupLabel>
-              </SidebarMenuButton>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="pl-3">
-              <TagList
-                initialTags={tags}
+      </SidebarHeader>
+      <ScrollArea className="max-h-[calc(110vh-20rem)] ">
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-indigo-600">Notas</SidebarGroupLabel>
+          <SidebarGroupContent className="space-y-3 rounded-md pl-3">
+            {directores.map((dir) => (
+              <Directory
+                key={dir.id}
+                dir={dir}
               />
-            </CollapsibleContent>
-          </Collapsible>
-        </SidebarGroupContent>
-      </SidebarGroup>
+            ))}
+            {notesNotArchived.map((note) => (
+              <Note
+                withoutDir={true}
+                key={note.id}
+                note={note}
+              />
+            ))}
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupContent className="space-y-3 rounded-md ">
+            <Collapsible className="group">
+              <CollapsibleTrigger asChild>
+                <SidebarMenuButton className="pl-0">
+                  <SidebarGroupLabel className="text-indigo-600 flex space-x-3">
+                    <span>
+                      Tags
+                    </span>
+                    <NewTagButton
+                      tags={tags}
+                    />
+                    <ChevronUp className="transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                  </SidebarGroupLabel>
+                </SidebarMenuButton>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pl-3">
+                <TagList
+                  initialTags={tags}
+                />
+              </CollapsibleContent>
+            </Collapsible>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </ScrollArea>
       <SidebarFooter>
         <UserNav
           user={userData}

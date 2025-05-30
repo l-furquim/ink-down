@@ -19,6 +19,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { BadgeCheck, ChevronsUpDown, LogOut, Settings, Sparkles } from "lucide-react"
+import Link from "next/link"
 
 export function UserNav({
   user,
@@ -26,7 +27,7 @@ export function UserNav({
   user: UserDataType
 }) {
   return (
-    <SidebarMenu>
+    <SidebarMenu className="absolute bottom-0">
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -72,13 +73,21 @@ export function UserNav({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+              <DropdownMenuItem className="hover:cursor-pointer" asChild>
+                <Link href="/account">
+                  <BadgeCheck />
+                  <span>
+                    Conta
+                  </span>
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings />
-                Settings
+              <DropdownMenuItem className="hover:cursor-pointer" asChild>
+                <Link href="/settings">
+                  <Settings />
+                  <span>
+                    Configurações
+                  </span>
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

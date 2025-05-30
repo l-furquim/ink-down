@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 
 export default function AccountPage(){
-  const isUserLogged = false;
+  const isUserLogged = true;
 
   if(!isUserLogged){
     redirect("/login");
