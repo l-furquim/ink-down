@@ -51,18 +51,22 @@ export default function NotebookLayout({
     {
       name: "Java",
       id: 1,
-      son: {
-        name: "Spring",
-        id: 190,
-        son: null,
-        notes: [
-          {
-            name: "Spring security",
-            id: 199,
-            archived: false
-          }
-        ]
-      },
+      parentId: null,
+      childrens: [
+        {
+          name: "Spring",
+          id: 190,
+          parentId: 9999,
+          childrens: null,
+          notes: [
+            {
+              name: "Spring security",
+              id: 199,
+              archived: false
+            }
+          ]
+        }
+      ],
       notes: [
         {
           name: "Nota excluida 2",
@@ -76,10 +80,12 @@ export default function NotebookLayout({
         }
       ]
     },
+
     {
       name: "JavaScript",
       id: 2,
-      son: null,
+      parentId: null,
+      childrens: [],
       notes: [
         {
           name: "Nota excluida 2",
@@ -95,6 +101,19 @@ export default function NotebookLayout({
     },
   ];
 
+  const tags = [
+    { id: 1, name: "JavaScript", colorHex: "#f7df1e" },
+    { id: 2, name: "Python", colorHex: "#3572A5" },
+    { id: 3, name: "Java", colorHex: "#b07219" },
+    { id: 4, name: "C++", colorHex: "#00599C" },
+    { id: 5, name: "Go", colorHex: "#00ADD8" },
+    { id: 6, name: "Rust", colorHex: "#DEA584" },
+    { id: 7, name: "TypeScript", colorHex: "#3178c6" },
+    { id: 8, name: "Kotlin", colorHex: "#A97BFF" },
+    { id: 9, name: "Ruby", colorHex: "#CC342D" },
+    { id: 10, name: "Swift", colorHex: "#FFAC45" }
+  ];
+
   if (data === null) {
     redirect("/login");
   };
@@ -102,6 +121,7 @@ export default function NotebookLayout({
   return (
     <SidebarProvider>
       <AppSidebar
+        tags={tags}
         notifications={notifications}
         notesWithoutDir={notas}
         directores={dirs}

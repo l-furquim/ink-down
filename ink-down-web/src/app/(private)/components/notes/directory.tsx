@@ -46,7 +46,7 @@ export const Directory = ({ dir }: DirectoryProps) => {
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton onClick={() => setDirOpened(!dirOpened)}>
                   {editing ? (
-                    <Input 
+                    <Input
                       className="h-6 px-1 text-sm"
                       value={"cucucuc"}
                       autoFocus
@@ -66,10 +66,13 @@ export const Directory = ({ dir }: DirectoryProps) => {
             </SidebarMenuItem>
           </DirectoryContext>
           <CollapsibleContent className="pl-4 space-y-3 data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-            {dir.son && (
-              <Directory
-                dir={dir.son}
-              />
+            {dir.childrens && (
+              dir.childrens.map((children) => (
+                <Directory
+                  key={children.id}
+                  dir={children}
+                />
+              ))
             )}
             {dir.notes.map((note) => (
               <SidebarMenuSubButton className="list-none hover:cursor-pointer" key={note.id}>

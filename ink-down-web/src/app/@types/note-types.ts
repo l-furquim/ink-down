@@ -7,6 +7,13 @@ export interface NoteDataType {
 export interface DirectoryDataType {
   name: string,
   id: number,
-  son: DirectoryDataType | null,
+  parentId: number | null,
+  childrens: DirectoryDataType[] | null,
   notes: NoteDataType[]
 };
+
+export interface TagsDataType {
+  name: string,
+  colorHex: string,
+  id: number
+}
