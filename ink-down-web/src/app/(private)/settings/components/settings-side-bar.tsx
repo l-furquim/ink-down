@@ -19,10 +19,10 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { ThemeToggle } from "@/app/components/theme-toggle"
+import Link from "next/link"
 
 const data = {
   nav: [
-    { name: "Temas", icon: Bell },
     { name: "Editor", icon: Menu },
     { name: "Privacidade", icon: Paintbrush },
     { name: "Idiomas", icon: Globe },
@@ -30,7 +30,7 @@ const data = {
   ],
 }
 
-export function SettingsSidebar() {
+export function SettingsSidebar({ option }: { option: string }) {
   return (
     <Sidebar>
       <SidebarHeader>
@@ -44,16 +44,20 @@ export function SettingsSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {data.nav.map((item) => (
-                <SidebarMenuItem key={item.name}>
-                  <SidebarMenuButton>
-                    <item.icon />
-                    <span>
-                      {item.name}
-                    </span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <Link href={`?option=${item.name}`} key={item.name}>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      className={`${item.name === option && "bg-indigo-700 text-zinc-200 hover:bg-indigo-800 hover:text-zinc-200"}`}
+                    >
+                      <item.icon />
+                      <span>
+                        {item.name}
+                      </span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </Link>
               ))}
-              <ThemeToggle/>
+              <ThemeToggle />
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
