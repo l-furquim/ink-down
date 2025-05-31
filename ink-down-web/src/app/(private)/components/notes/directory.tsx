@@ -8,6 +8,7 @@ import { Note } from "./note"
 import { DirectoryContext } from "./directory-context"
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
+import Link from "next/link"
 
 
 interface DirectoryProps {
@@ -75,12 +76,14 @@ export const Directory = ({ dir }: DirectoryProps) => {
               ))
             )}
             {dir.notes.map((note) => (
-              <SidebarMenuSubButton className="list-none hover:cursor-pointer" key={note.id}>
-                <Note
-                  withoutDir={false}
-                  note={note}
-                />
-              </SidebarMenuSubButton>
+              <Link href={`?note=${note.name}&id=${note.id}`} key={note.id}>
+                <SidebarMenuSubButton className="list-none hover:cursor-pointer">
+                  <Note
+                    withoutDir={false}
+                    note={note}
+                  />
+                </SidebarMenuSubButton>
+              </Link>
             ))}
           </CollapsibleContent>
         </Collapsible>
