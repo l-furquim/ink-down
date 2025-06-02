@@ -49,9 +49,9 @@ export const SearchButton = ({ notes }: SearchButtonProps) => {
     <>
       <Button
         onClick={() => setOpen(true)}
-        className="flex w-full justify-start space-x-4 bg-indigo-600 hover:bg-indigo-800 hover:cursor-pointer">
+        className="flex dark:text-zinc-200 w-full justify-start space-x-4 bg-indigo-600 hover:bg-indigo-800 hover:cursor-pointer">
         <Search />
-        Search
+        Buscar
         <p className="text-sm text-muted-foreground w-full flex justify-end">
           <kbd className="pointer-events-none self text-zinc-200 bg-transparent border-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[15px] font-medium">
             <span className="text-sm">
@@ -66,26 +66,14 @@ export const SearchButton = ({ notes }: SearchButtonProps) => {
           <CommandEmpty>Nenhum resultado.</CommandEmpty>
           <CommandGroup heading="Notas">
             {notes.map((note) => (
-              <CommandItem key={note.id}>
-                <Notebook />
-                <span>{note.name}</span>
-              </CommandItem>
+              <Link onClick={() => setOpen(false)} key={note.id} className="hover:cursor-pointer" href={`?note=${note.name}&id=${note.id}` }>
+                <CommandItem>
+                  <Notebook />
+                  <span>{note.name}</span>
+                </CommandItem>
+              </Link>
             ))}
           </CommandGroup>
-          {/* <CommandGroup heading="Sugestões">
-            <CommandItem>
-              <Calendar />
-              <span>Calendar</span>
-            </CommandItem>
-            <CommandItem>
-              <Smile />
-              <span>Search Emoji</span>
-            </CommandItem>
-            <CommandItem>
-              <Calculator />
-              <span>Calculator</span>
-            </CommandItem>
-          </CommandGroup>*/}
           <CommandSeparator />
           <CommandGroup heading="Configurações">
             <Link onClick={() => setOpen(false)} href={"/account"} className="hover:cursor-pointer">

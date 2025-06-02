@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, KeyboardEventHandler } from "react";
 import type { TagsDataType } from "@/app/@types/note-types";
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
-} from "@/components/ui/context-menu"
+} from "@/components/ui/context-menu";
 import { ArchiveX, Palette, PenBox } from "lucide-react";
 import { ColorPicker } from "./color-picker";
 
@@ -17,14 +17,14 @@ interface TagContextProps {
   onRename: (id: number, newName: string) => void;
   onChangeColor: (id: number, newColor: string) => void;
   onDelete: (id: number) => void;
-};
+}
 
 export const TagContext = ({
   tag,
   children,
   onRename,
   onChangeColor,
-  onDelete
+  onDelete,
 }: TagContextProps) => {
   const [isRenaming, setIsRenaming] = useState(false);
   const [newName, setNewName] = useState(tag.name);
@@ -47,30 +47,34 @@ export const TagContext = ({
 
   return (
     <ContextMenu>
-      <ContextMenuTrigger>
-        {children}
-      </ContextMenuTrigger>
+      <ContextMenuTrigger>{children}</ContextMenuTrigger>
 
       <ContextMenuContent
-        className="w-60 z-[999]"
-        onCloseAutoFocus={(e) => e.preventDefault()} 
+        className="w-60 z-[999] dark:text-zinc-200"
+        onCloseAutoFocus={(e) => e.preventDefault()}
         onInteractOutside={(e) => {
-          // Impede fechamento durante a edição
           if (!isRenaming) e.preventDefault();
         }}
       >
         <ContextMenuItem
           inset
-          className="text-zinc-500 p-0"
+          className=" p-0"
           onSelect={(e) => e.preventDefault()}
         >
           {isRenaming ? (
-            <div className="px-2 py-1.5 w-full" onBlur={handleRename}>
+            <div className="px-2 py-1.5 w-full">
               <input
                 ref={inputRef}
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleRename()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleRename();
+                  }
+                  if (e.keyCode === 27) {
+                    setIsRenaming(false);
+                  }
+                }}
                 className="w-full px-2 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 onClick={(e) => e.stopPropagation()}
               />
@@ -91,7 +95,7 @@ export const TagContext = ({
 
         <ContextMenuItem
           inset
-          className="text-zinc-500 p-0"
+          className=" p-0"
           onSelect={(e) => e.preventDefault()}
         >
           <div className="flex items-center w-full px-2 py-1.5">
@@ -111,7 +115,7 @@ export const TagContext = ({
 
         <ContextMenuItem
           inset
-          className="group text-zinc-500  hover:!text-red-800 p-0"
+          className="group   hover:!text-red-800 p-0"
           onClick={() => onDelete(tag.id)}
         >
           <button className="flex items-center w-full px-2 py-1.5 text-left">
@@ -122,4 +126,4 @@ export const TagContext = ({
       </ContextMenuContent>
     </ContextMenu>
   );
-}
+};

@@ -26,6 +26,10 @@ export default function NotebookPage() {
         </h1>
       ) : (
         <div className="pl-12 flex flex-col space-y-5">
+          <input
+          value={noteTitle}
+          onChange={(e) => setNoteTitle(e.currentTarget.value)}
+          />
           <Editor markdown={markDown} />
         </div>
       )}

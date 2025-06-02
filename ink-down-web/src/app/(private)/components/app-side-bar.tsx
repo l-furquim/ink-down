@@ -26,29 +26,39 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   userData, notesWithoutDir, directores,
   notifications, tags,
 }) => {
+
   const notesArquived = notesWithoutDir.filter(n => n.archived);
   const notesNotArchived = notesWithoutDir.filter(n => !n.archived);
+  const notes = [
+    ...notesNotArchived,
+    ...directores.flatMap(dir => dir.notes),
+  ];
+
+
+  console.log(notes);
 
   return (
     <Sidebar
     >
       <SidebarHeader className="pt-5 space-y-2">
         <SearchButton
-        notes={notesNotArchived}
+          notes={notes}
         />
-        <Notifications
-          notifications={notifications}
-        />
-        <ArchivedNotes
-          data={notesArquived}
-        />
+        <span className="pl-2 list-none space-y-2">
+          <Notifications
+            notifications={notifications}
+          />
+          <ArchivedNotes
+            data={notesArquived}
+          />
+        </span>
       </SidebarHeader>
       <ScrollArea className="max-h-[calc(110vh-20rem)] ">
         <SidebarGroup>
           <SidebarGroupLabel className="text-indigo-600">Notas</SidebarGroupLabel>
           <NotesList
-          directories={directores}
-          notes={notesNotArchived}
+            directories={directores}
+            notes={notesNotArchived}
           />
         </SidebarGroup>
         <SidebarGroup>

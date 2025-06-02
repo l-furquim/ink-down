@@ -16,6 +16,7 @@ app.register(fastifyJwt, {
 
 const publicRoutes = [
   '/authors/create',
+  '/authors/code',
   '/authors/auth'
 ];
 
@@ -24,7 +25,7 @@ appRoutes(app);
 
 app.addHook('preHandler', async (request: FastifyRequest, reply: FastifyReply) => {
   console.log(request.originalUrl);
-  
+
   if (publicRoutes.includes(request.originalUrl ?? request.url)) {
     return;
   }
@@ -46,7 +47,7 @@ app.setErrorHandler((error, request, reply) => {
   }
 
   return reply.status(500).send({
-    message: 'Internal server error.', 
+    message: 'Internal server error.',
     cause: error.message,
     stack: error.stack,
   });

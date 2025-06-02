@@ -7,6 +7,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
 import { ArchiveRestore, ArchiveX } from "lucide-react";
+import type { RefObject } from "react";
 
 interface DirectoryContextProps {
   dir: DirectoryDataType,
@@ -23,7 +24,10 @@ export const DirectoryContext = ({ dir, children, onRename,onRemove }: Directory
         {children}
       </ContextMenuTrigger>
       <ContextMenuContent className="w-50">
-        <ContextMenuItem inset className="text-zinc-500" onClick={onRename}>
+        <ContextMenuItem inset className="text-zinc-500" onClick={(e) => {
+          onRename();
+          e.stopPropagation();
+        }}>
           <ArchiveRestore
           />
           <span className="text-zinc-800">

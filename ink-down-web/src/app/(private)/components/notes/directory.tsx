@@ -1,14 +1,14 @@
 "use client"
 
-import type { DirectoryDataType, NoteDataType } from "@/app/@types/note-types"
+import type { DirectoryDataType } from "@/app/@types/note-types"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { Sidebar, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from "@/components/ui/sidebar"
-import { ChevronDown, ChevronUp } from "lucide-react"
+import { SidebarMenuButton, SidebarMenuItem, SidebarMenuSubButton } from "@/components/ui/sidebar"
+import { ChevronUp } from "lucide-react"
 import { Note } from "./note"
 import { DirectoryContext } from "./directory-context"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Input } from "@/components/ui/input"
-import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 
 interface DirectoryProps {
@@ -18,15 +18,20 @@ interface DirectoryProps {
 export const Directory = ({ dir }: DirectoryProps) => {
   const [editing, setEditing] = useState(false);
   const [remove, setRemove] = useState(false);
-
+  const router = useRouter();
   const [name, setName] = useState(dir.name);
   const [dirOpened, setDirOpened] = useState(false);
+  const nameRef = useRef<HTMLInputElement>(null);
 
   console.log("ALo ?");
   console.log(editing);
 
   const handleRename = () => {
     setEditing(true)
+  }
+
+  const handleSelectNote = (url: string) => {
+    router.push(url);
   }
 
   const handleRenameSubmit = () => {
@@ -48,6 +53,7 @@ export const Directory = ({ dir }: DirectoryProps) => {
                 <SidebarMenuButton onClick={() => setDirOpened(!dirOpened)}>
                   {editing ? (
                     <Input
+                      ref={nameRef}
                       className="h-6 px-1 text-sm"
                       value={"cucucuc"}
                       autoFocus
@@ -76,14 +82,12 @@ export const Directory = ({ dir }: DirectoryProps) => {
               ))
             )}
             {dir.notes.map((note) => (
-              <Link href={`?note=${note.name}&id=${note.id}`} key={note.id}>
-                <SidebarMenuSubButton className="list-none hover:cursor-pointer">
-                  <Note
+                <SidebarMenuSubButton onClick={() => handleSelectNote(`?note=${note.name}&id=${note.id}`)} key={note.id} className="list-none hover:cursor-pointer">
+                  <Note 
                     withoutDir={false}
                     note={note}
                   />
                 </SidebarMenuSubButton>
-              </Link>
             ))}
           </CollapsibleContent>
         </Collapsible>

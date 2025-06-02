@@ -5,14 +5,14 @@ import { makeSendAuthorCodeUseCase } from "@/use-cases/factories/author/make-sen
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
 
-export async function sendAuthorCode(request: FastifyRequest, reply: FastifyReply){
+export async function sendAuthorCode(request: FastifyRequest, reply: FastifyReply) {
   const sendAuthorCodeSchema = z.object({
     email: z.string().email(),
   });
 
   const { email } = sendAuthorCodeSchema.parse(request.body);
 
-  try{
+  try {
     const useCase = makeSendAuthorCodeUseCase();
 
     const code = await useCase.send({
@@ -20,26 +20,26 @@ export async function sendAuthorCode(request: FastifyRequest, reply: FastifyRepl
     });
 
     const token = await reply.jwtSign(
-    {code: code},
-    { expiresIn : "15min"} );
+      { code: code },
+      { expiresIn: "15min" });
 
     return reply.status(201).send({
       token: token,
     });
-  }catch(err){
-    if(err instanceof MailError){
+  } catch (err) {
+    if (err instanceof MailError) {
       return reply.status(500).send({
         message: err.message,
       });
     }
 
-    if(err instanceof AuthorAlredyExistError){
+    if (err instanceof AuthorAlredyExistError) {
       return reply.status(400).send({
         message: err.message,
       });
     }
 
-    if(err instanceof GenerateCodeError){
+    if (err instanceof GenerateCodeError) {
       return reply.status(500).send({
         message: err.message,
       });

@@ -7,7 +7,6 @@ import {
   codeBlockPlugin,
   linkPlugin,
   markdownShortcutPlugin,
-  toolbarPlugin,
   MDXEditor,
   MDXEditorMethods,
   diffSourcePlugin
@@ -45,7 +44,6 @@ const Editor = ({ markdown }: EditorProps) => {
         codeBlockPlugin(),
         linkPlugin(),
         markdownShortcutPlugin(),
-        toolbarPlugin(),
         diffSourcePlugin()
       ]}
     />

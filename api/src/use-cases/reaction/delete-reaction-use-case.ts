@@ -6,19 +6,19 @@ interface DeleteReactionRequest {
   reactionId: number,
 }
 
-export class DeleteReactionUseCase{
-  constructor(private repository: PrismaReactionRepository){};
+export class DeleteReactionUseCase {
+  constructor(private repository: PrismaReactionRepository) { };
 
   async delete({
     authorId, reactionId
-  }: DeleteReactionRequest){
+  }: DeleteReactionRequest) {
     const reaction = await this.repository.findById(reactionId);
 
-    if(!reaction){
+    if (!reaction) {
       throw new ReactionNotFoundError();
     }
 
-    if(reaction.author_id !== authorId){
+    if (reaction.author_id !== authorId) {
       throw new Error("Cant delete a reaction that is not yours");
     }
 
