@@ -4,10 +4,14 @@ import type { TagsDataType } from "@/app/@types/note-types";
 import { SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { useTagsActions } from "../../../../hooks/use-tags";
 import { TagContext } from "../tags/tag-context";
+import { useTagsContext } from "@/providers/tags-provider";
+import { useEffect } from "react";
 
-export const TagList = ({ initialTags }: { initialTags: TagsDataType[] }) => {
+export const TagList = (
+	/* { initialTags }: { initialTags: TagsDataType[] } */
+) => {
 	const { tags, handleRenameTag, handleChangeColor, handleDeleteTag } =
-		useTagsActions(initialTags);
+		useTagsContext();
 
 	return (
 		<div className="max-h-[60vh] overflow-hidden">

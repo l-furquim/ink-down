@@ -17,7 +17,7 @@ export const ColorPicker = ({
 }) => {
 	const [open, setOpen] = useState(false);
 
-	useEffect(() => { }, [open]);
+	useEffect(() => {}, [open]);
 
 	return (
 		<Popover open={open} onOpenChange={setOpen} modal={true}>

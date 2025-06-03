@@ -6,13 +6,17 @@ import type { TagsDataType } from "@/app/@types/note-types";
 export const useTagsActions = (initialTags: TagsDataType[]) => {
 	const [tags, setTags] = useState<TagsDataType[]>(initialTags);
 
-	const handleNewTag = useCallback((name: string) => {
+	const handleNewTag = useCallback((color: string, name: string) => {
+		console.log("Ue");
+
 		const newTag: TagsDataType = {
 			id: Date.now(),
 			name: name,
-			colorHex: "#3b82f6",
+			colorHex: color,
 		};
 		setTags((prev) => [...prev, newTag]);
+
+		console.log(tags);
 	}, []);
 
 	const handleRenameTag = useCallback((id: number, newName: string) => {

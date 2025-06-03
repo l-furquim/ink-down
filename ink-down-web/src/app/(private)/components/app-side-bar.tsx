@@ -29,6 +29,7 @@ import { NewTagButton } from "./tags/new-tag-button";
 import { UserNav } from "./notes/user-nav";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { NotesList } from "./notes/note-list";
+import { TagsProvider } from "@/providers/tags-provider";
 
 interface AppSidebarProps {
 	userData: UserDataType;
@@ -72,20 +73,22 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 				</SidebarGroup>
 				<SidebarGroup>
 					<SidebarGroupContent className="space-y-3 rounded-md ">
-						<Collapsible className="group">
-							<CollapsibleTrigger asChild>
-								<SidebarMenuButton className="pl-0">
-									<SidebarGroupLabel className="text-indigo-400 flex space-x-3 w-full">
-										<span>Tags</span>
-										<ChevronUp className="transition-transform duration-200 group-data-[state=open]:rotate-180 hover:cursor-pointer" />
-										<NewTagButton tags={tags} />
-									</SidebarGroupLabel>
-								</SidebarMenuButton>
-							</CollapsibleTrigger>
-							<CollapsibleContent className="pl-3">
-								<TagList initialTags={tags} />
-							</CollapsibleContent>
-						</Collapsible>
+						<TagsProvider initialTags={tags}>
+							<Collapsible className="group">
+								<CollapsibleTrigger asChild>
+									<SidebarMenuButton className="pl-0">
+										<SidebarGroupLabel className="text-indigo-400 flex space-x-3 w-full">
+											<span>Tags</span>
+											<ChevronUp className="transition-transform duration-200 group-data-[state=open]:rotate-180 hover:cursor-pointer" />
+											<NewTagButton />
+										</SidebarGroupLabel>
+									</SidebarMenuButton>
+								</CollapsibleTrigger>
+								<CollapsibleContent className="pl-3">
+									<TagList />
+								</CollapsibleContent>
+							</Collapsible>
+						</TagsProvider>
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</ScrollArea>
