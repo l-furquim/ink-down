@@ -1,10 +1,5 @@
-export const AuthProvider = ({
-  children
-}: { children: React.ReactNode }) => {
-  
-  let dados;
-  
-  return (
-    {}  
-  )
-}
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+	let dados;
+
+	return {};
+};

@@ -6,8 +6,8 @@
 		"useIgnoreFile": false
 	},
 	"files": {
-    "include": ["src"]
-  },
+		"include": ["src"]
+	},
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab"
