@@ -35,12 +35,12 @@ export class PrismaNoteRepository implements NoteRepository{
         title: true,
         content: true,
         createdAt: true,
-        reactions: {
+        /* reactions: {
           select: {
             type: true
           }
-        },
-        Share: {
+        }, */
+        /* Share: {
           select: {
             author: true,
           }
@@ -52,10 +52,11 @@ export class PrismaNoteRepository implements NoteRepository{
             reactions: true,
             Share: true,
           }
-        }
+        } */
       },
       where: {
         author_id: authorId,
+        directoryId: null
       }
       
     });
@@ -68,7 +69,7 @@ export class PrismaNoteRepository implements NoteRepository{
 
     return note;
   }
-  async update(data: { title?: string, content?: string, type?: string, id: string}): Promise<void> {
+  async update(data: { title?: string, content?: string, type?: string, id: string, archived: boolean}): Promise<void> {
       await prisma.note.update({
         where: {
           id: data.id,

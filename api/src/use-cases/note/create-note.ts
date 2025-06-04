@@ -1,7 +1,6 @@
 import type { AuthorsRepository } from "@/repositories/author-repository";
 import type { NoteRepository } from "@/repositories/note-repository";
 import { AccountNotFoundEror } from "../errors/account-not-found-error";
-import { InvalidPublicNoteContent } from "../errors/invalid-public-note-content";
 
 interface CreateNoteUseCaseRequest {
   title: string,
@@ -9,20 +8,21 @@ interface CreateNoteUseCaseRequest {
   type: string,
   authorId: string,
   icon: string,
-  id: string,
+  dirId: number | undefined
 };
 
 
 export class CreateNoteUseCase {
-  constructor(private repository: NoteRepository, private authorRepository: AuthorsRepository){}
+  constructor(private repository: NoteRepository, private authorRepository: AuthorsRepository) { }
 
   async create({
-    title,content,type,authorId, icon, id
-  }: CreateNoteUseCaseRequest){
-    
+    title, content, type, authorId, icon, dirId
+  }: CreateNoteUseCaseRequest) {
+
     const author = await this.authorRepository.findById(authorId);
 
-    if(!author){
+    if (!author) {
+
       throw new AccountNotFoundEror([authorId]);
     }
     console.log("Achou o ator");
@@ -33,7 +33,7 @@ export class CreateNoteUseCase {
       type,
       icon,
       author_id: authorId,
-      id,
+      directoryId: dirId
     });
 
     return note;

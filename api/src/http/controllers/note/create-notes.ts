@@ -4,18 +4,18 @@ import { makeCreateNoteUseCase } from "@/use-cases/factories/note/make-create-no
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
 
-export async function createNote(request: FastifyRequest, reply: FastifyReply){
+export async function createNote(request: FastifyRequest, reply: FastifyReply) {
   const createNoteSchema = z.object({
     title: z.string(),
     content: z.string(),
     type: z.enum(["PRIVATE", "PUBLIC"]).default("PRIVATE"),
     icon: z.string(),
-    id: z.string(),
+    dirId: z.number().int().optional()
   });
 
-  const { title, content, type, icon, id } = createNoteSchema.parse(request.body);
-  
-  try{
+  const { title, content, type, icon, dirId } = createNoteSchema.parse(request.body);
+
+  try {
     const useCase = makeCreateNoteUseCase();
 
     const note = await useCase.create({
@@ -24,15 +24,14 @@ export async function createNote(request: FastifyRequest, reply: FastifyReply){
       type,
       icon,
       authorId: request.user.sub,
-      id,
+      dirId
     });
 
     return reply.status(201).send({
       note
     });
-
-  }catch(err){
-    if(err instanceof InvalidPublicNoteContent || err instanceof AccountNotFoundEror){
+  } catch (err) {
+    if (err instanceof InvalidPublicNoteContent || err instanceof AccountNotFoundEror) {
       reply.status(400).send({
         message: err.message
       });

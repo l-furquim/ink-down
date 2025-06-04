@@ -3,26 +3,26 @@ import { makeUpdateNoteUseCase } from "@/use-cases/factories/note/make-update-no
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
 
-
-export async function updateNote(request: FastifyRequest, reply: FastifyReply){
+export async function updateNote(request: FastifyRequest, reply: FastifyReply) {
   const updateNoteSchema = z.object({
     id: z.string(),
     title: z.string().optional(),
     content: z.string().optional(),
     icon: z.string().optional(),
     type: z.enum(["PRIVATE", "PUBLIC"]).optional(),
+    archived: z.boolean(),
   });
 
-  const { title, content, type, id, icon } = updateNoteSchema.parse(request.body);
+  const { title, content, type, id, icon, archived } = updateNoteSchema.parse(request.body);
 
-  try{
+  try {
     const useCase = makeUpdateNoteUseCase();
 
     await useCase.update({
-      title, content, type, id, icon
+      title, content, type, id, icon, archived
     });
-  }catch(err){
-    if(err instanceof InvalidDataError){
+  } catch (err) {
+    if (err instanceof InvalidDataError) {
       return reply.status(400).send({
         message: err.message,
       });
