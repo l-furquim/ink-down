@@ -30,7 +30,6 @@ export async function createNote(request: FastifyRequest, reply: FastifyReply) {
     return reply.status(201).send({
       note
     });
-
   } catch (err) {
     if (err instanceof InvalidPublicNoteContent || err instanceof AccountNotFoundEror) {
       reply.status(400).send({

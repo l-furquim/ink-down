@@ -32,13 +32,11 @@ export async function sendAuthorCode(request: FastifyRequest, reply: FastifyRepl
         message: err.message,
       });
     }
-
     if (err instanceof AuthorAlredyExistError) {
       return reply.status(400).send({
         message: err.message,
       });
     }
-
     if (err instanceof GenerateCodeError) {
       return reply.status(500).send({
         message: err.message,

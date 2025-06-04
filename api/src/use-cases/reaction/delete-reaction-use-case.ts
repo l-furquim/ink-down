@@ -5,7 +5,6 @@ interface DeleteReactionRequest {
   authorId: string,
   reactionId: number,
 }
-
 export class DeleteReactionUseCase {
   constructor(private repository: PrismaReactionRepository) { };
 
@@ -24,4 +23,3 @@ export class DeleteReactionUseCase {
 
     await this.repository.delete(reaction);
   }
-}
