@@ -1,6 +1,6 @@
 export interface NoteDataType {
 	name: string;
-	id: number;
+	id: string;
 	archived: boolean;
 }
 
