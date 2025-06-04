@@ -3,7 +3,6 @@ import { makeUpdateNoteUseCase } from "@/use-cases/factories/note/make-update-no
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
 
-
 export async function updateNote(request: FastifyRequest, reply: FastifyReply) {
   const updateNoteSchema = z.object({
     id: z.string(),

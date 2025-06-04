@@ -22,6 +22,7 @@ export class CreateNoteUseCase {
     const author = await this.authorRepository.findById(authorId);
 
     if (!author) {
+
       throw new AccountNotFoundEror([authorId]);
     }
     console.log("Achou o ator");
