@@ -7,9 +7,7 @@ import { TagContext } from "../tags/tag-context";
 import { useTagsContext } from "@/providers/tags-provider";
 import { useEffect } from "react";
 
-export const TagList = (
-	/* { initialTags }: { initialTags: TagsDataType[] } */
-) => {
+export const TagList = () => {
 	const { tags, handleRenameTag, handleChangeColor, handleDeleteTag } =
 		useTagsContext();
 

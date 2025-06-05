@@ -6,14 +6,15 @@ import {
 	ContextMenuShortcut,
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { ArchiveRestore, ArchiveX } from "lucide-react";
+import { ArchiveRestore, ArchiveX, PenBox } from "lucide-react";
 import type { RefObject } from "react";
 
 interface DirectoryContextProps {
 	dir: DirectoryDataType;
 	children: React.ReactNode;
-	onRename: () => void;
-	onRemove: () => void;
+	onRename: (newName: string, id: number) => void;
+	onRemove: (id: number) => void;
+	onNewDirectory: (newName: string, id: number) => void;
 }
 
 export const DirectoryContext = ({
@@ -21,6 +22,7 @@ export const DirectoryContext = ({
 	children,
 	onRename,
 	onRemove,
+	onNewDirectory,
 }: DirectoryContextProps) => {
 	return (
 		<ContextMenu>
@@ -30,19 +32,14 @@ export const DirectoryContext = ({
 					inset
 					className="text-zinc-500"
 					onClick={(e) => {
-						onRename();
 						e.stopPropagation();
 					}}
 				>
-					<ArchiveRestore />
+					<PenBox />
 					<span className="text-zinc-800">Renomear</span>
 					<ContextMenuShortcut>⌘[</ContextMenuShortcut>
 				</ContextMenuItem>
-				<ContextMenuItem
-					inset
-					className="group text-zinc-500"
-					onClick={onRemove}
-				>
+				<ContextMenuItem inset className="group text-zinc-500">
 					<ArchiveX className="group-hover:text-red-700" />
 					<span className="text-zinc-800">Excluir</span>
 					<ContextMenuShortcut>⌘]</ContextMenuShortcut>

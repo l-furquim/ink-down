@@ -26,10 +26,12 @@ import {
 import { ChevronUp } from "lucide-react";
 import { TagList } from "./tags/tags-list";
 import { NewTagButton } from "./tags/new-tag-button";
-import { UserNav } from "./notes/user-nav";
+import { UserNav } from "./user-nav";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { NotesList } from "./notes/note-list";
 import { TagsProvider } from "@/providers/tags-provider";
+import { NoteProvider } from "@/providers/note-provider";
+import { DirectoryProvider } from "@/providers/directories-provider";
 
 interface AppSidebarProps {
 	userData: UserDataType;
@@ -69,7 +71,11 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 					<SidebarGroupLabel className="text-indigo-400">
 						Notas
 					</SidebarGroupLabel>
-					<NotesList directories={directores} notes={notesNotArchived} />
+					<DirectoryProvider initialDirectories={directores}>
+						<NoteProvider initialNotes={notes}>
+							<NotesList />
+						</NoteProvider>
+					</DirectoryProvider>
 				</SidebarGroup>
 				<SidebarGroup>
 					<SidebarGroupContent className="space-y-3 rounded-md ">

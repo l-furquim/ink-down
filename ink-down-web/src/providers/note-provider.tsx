@@ -1,3 +1,5 @@
+"use client";
+
 import type { NoteDataType } from "@/app/@types/note-types";
 import { useNotesActions } from "@/hooks/use-notes";
 import { createContext, useContext } from "react";
