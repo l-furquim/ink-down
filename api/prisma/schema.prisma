@@ -21,6 +21,7 @@ model Author {
   reactions   Reaction[]
   shares      Share[]
   directories Directory[]
+  tags Tag[]
 
   @@map("authors")
 }
@@ -57,6 +58,16 @@ model Directory {
   authorId  String
 
   @@map("directories")
+}
+
+model Tag {
+  id Int @id @default(autoincrement())
+  name String
+  color String
+  authorId String
+  Author Author @relation(fields: [authorId], references: [id])
+
+  @@map("tags")
 }
 
 model Reaction {

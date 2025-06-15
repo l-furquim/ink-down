@@ -1,7 +1,5 @@
 "use client";
 
-import type { TagsDataType } from "@/app/@types/note-types";
-import { useTagsActions } from "@/hooks/use-tags";
 import { PlusSquare } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -25,9 +23,9 @@ export const NewTagButton = () => {
 	const { handleNewTag } = useTagsContext();
 	const [colorSelected, setColorSelected] = useState("");
 	const [error, setError] = useState(<></>);
+	const [open, setOpen] = useState(false);
 
 	const submitTag = () => {
-		console.log(colorSelected);
 		setError(<></>);
 
 		if (colorSelected === "") {

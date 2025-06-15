@@ -6,10 +6,11 @@ import { useCallback, useState } from "react";
 export const useNotesActions = (initialNotes: NoteDataType[]) => {
 	const [notes, setNotes] = useState(initialNotes);
 
-	const handleNewNote = useCallback((name: string) => {
+	const handleNewNote = useCallback((name: string, directoryId: number) => {
 		const newNote: NoteDataType = {
-			name,
+			title: name,
 			archived: false,
+			directoryId,
 			id: Date.now().toString(),
 		};
 

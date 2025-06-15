@@ -21,7 +21,8 @@ export async function sendAuthorCode(request: FastifyRequest, reply: FastifyRepl
 
     const token = await reply.jwtSign(
       { code: code },
-      { expiresIn: "15min" });
+      { expiresIn: "15min" }
+    );
 
     return reply.status(201).send({
       token: token,

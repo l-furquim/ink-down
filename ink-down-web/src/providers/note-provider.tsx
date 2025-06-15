@@ -6,7 +6,7 @@ import { createContext, useContext } from "react";
 
 type NoteContextType = {
 	notes: NoteDataType[];
-	handleNewNote: (name: string) => void;
+	handleNewNote: (name: string, directoryId: number) => void;
 	handleRenameNote: (id: string, newName: string) => void;
 	handleDeleteNote: (id: string) => void;
 };

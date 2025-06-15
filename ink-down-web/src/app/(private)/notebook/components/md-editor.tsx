@@ -26,8 +26,6 @@ const Editor = ({ markdown }: EditorProps) => {
 		if (ref.current) {
 			ref.current.setMarkdown(md);
 		}
-
-		console.log(md);
 	}, [md]);
 
 	return (

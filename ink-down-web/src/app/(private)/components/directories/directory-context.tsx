@@ -6,19 +6,17 @@ import {
 	ContextMenuShortcut,
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { ArchiveRestore, ArchiveX, PenBox } from "lucide-react";
-import type { RefObject } from "react";
+import { ArchiveX, PenBox, Folder } from "lucide-react";
+import { NewDirectoryButton } from "./new-directory-button";
 
 interface DirectoryContextProps {
-	dir: DirectoryDataType;
 	children: React.ReactNode;
-	onRename: (newName: string, id: number) => void;
+	onRename: () => void;
 	onRemove: (id: number) => void;
-	onNewDirectory: (newName: string, id: number) => void;
+	onNewDirectory: () => void;
 }
 
 export const DirectoryContext = ({
-	dir,
 	children,
 	onRename,
 	onRemove,
@@ -27,21 +25,27 @@ export const DirectoryContext = ({
 	return (
 		<ContextMenu>
 			<ContextMenuTrigger>{children}</ContextMenuTrigger>
-			<ContextMenuContent className="w-50">
+			<ContextMenuContent className="w-50  text-zinc-800 dark:text-zinc-200">
 				<ContextMenuItem
 					inset
-					className="text-zinc-500"
+				>
+					<NewDirectoryButton/>
+					<ContextMenuShortcut>⌘*</ContextMenuShortcut>
+				</ContextMenuItem>
+				<ContextMenuItem
+					inset
 					onClick={(e) => {
+						onRename()
 						e.stopPropagation();
 					}}
 				>
 					<PenBox />
-					<span className="text-zinc-800">Renomear</span>
+					<span className="">Renomear</span>
 					<ContextMenuShortcut>⌘[</ContextMenuShortcut>
 				</ContextMenuItem>
-				<ContextMenuItem inset className="group text-zinc-500">
+				<ContextMenuItem inset className="group " onClick={() => onRemove}>
 					<ArchiveX className="group-hover:text-red-700" />
-					<span className="text-zinc-800">Excluir</span>
+					<span className="">Excluir</span>
 					<ContextMenuShortcut>⌘]</ContextMenuShortcut>
 				</ContextMenuItem>
 			</ContextMenuContent>

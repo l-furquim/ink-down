@@ -1,11 +1,12 @@
 export interface NoteDataType {
-	name: string;
+	title: string;
 	id: string;
 	archived: boolean;
+	directoryId: number | null;
 }
 
 export interface DirectoryDataType {
-	name: string;
+	title: string;
 	id: number;
 	parentId: number | null;
 	childrens: DirectoryDataType[] | null;

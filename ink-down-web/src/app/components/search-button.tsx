@@ -69,11 +69,11 @@ export const SearchButton = ({ notes }: SearchButtonProps) => {
 								onClick={() => setOpen(false)}
 								key={note.id}
 								className="hover:cursor-pointer"
-								href={`?note=${note.name}&id=${note.id}`}
+								href={`?note=${note.title}&id=${note.id}`}
 							>
 								<CommandItem>
 									<Notebook />
-									<span>{note.name}</span>
+									<span>{note.title}</span>
 								</CommandItem>
 							</Link>
 						))}

@@ -17,7 +17,7 @@ export const useDirectoriesActions = (
 		(name: string, parentId: number | null) => {
 			const newDir: DirectoryDataType = {
 				id: Date.now(),
-				name,
+				title: name,
 				notes: [],
 				childrens: [],
 				parentId,

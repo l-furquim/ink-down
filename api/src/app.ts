@@ -1,9 +1,10 @@
-import fastify, { type FastifyReply, type FastifyRequest } from "fastify";
+import fastify,{ type FastifyReply, type FastifyRequest } from "fastify";
 import { appRoutes } from "./http/routes";
 import { ZodError } from "zod";
 import { env } from "./env";
 import fastifyJwt from "@fastify/jwt";
 import { verifyJwt } from "./http/middlewares/verify-jwt";
+import cors from "@fastify/cors"
 
 export const app = fastify();
 
@@ -12,6 +13,11 @@ app.register(fastifyJwt, {
   sign: {
     expiresIn: '120min',
   },
+});
+
+app.register(cors, {
+  origin: env.CONSUMER_URL,
+  methods: ['GET', 'POST', 'OPTIONS'],
 });
 
 const publicRoutes = [

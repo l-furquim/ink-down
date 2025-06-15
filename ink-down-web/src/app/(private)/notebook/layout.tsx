@@ -1,10 +1,19 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "../components/app-side-bar";
 import { redirect } from "next/navigation";
+import type { DirectoryDataType, NoteDataType } from "@/app/@types/note-types";
+import { getDirectories } from "@/app/actions/get-directories";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function NotebookLayout({
+export default async function NotebookLayout({
 	children,
 }: { children: React.ReactNode }) {
+	const directories = await getDirectories();
+
+	if (!directories) {
+		return <h1>alo/</h1>;
+	}
 	const data = {
 		name: "Lucas",
 		email: "furquimmsw@gmail.com",
@@ -30,24 +39,28 @@ export default function NotebookLayout({
 		},
 	];
 
-	const notas = [
+	const notas: NoteDataType[] = [
 		{
 			name: "Nota excluida",
-			id: 1,
+			id: "1",
 			archived: true,
+			directoryId: null,
 		},
 		{
 			name: "Nota normal",
-			id: 9,
+			id: "9",
 			archived: false,
+			directoryId: null,
 		},
 		{
 			name: "Nota excluida 2",
-			id: 129,
+			id: "129",
 			archived: true,
+			directoryId: null,
 		},
 	];
-	const dirs = [
+
+	const dirs: DirectoryDataType[] = [
 		{
 			name: "Java",
 			id: 1,
@@ -61,8 +74,9 @@ export default function NotebookLayout({
 					notes: [
 						{
 							name: "Spring security",
-							id: 199,
+							id: "199",
 							archived: false,
+							directoryId: 1,
 						},
 					],
 				},
@@ -74,8 +88,9 @@ export default function NotebookLayout({
 					notes: [
 						{
 							name: "Spring security",
-							id: 777,
+							id: "777",
 							archived: false,
+							directoryId: 1,
 						},
 					],
 				},
@@ -87,8 +102,9 @@ export default function NotebookLayout({
 					notes: [
 						{
 							name: "Spring security",
-							id: 222,
+							id: "222",
 							archived: false,
+							directoryId: 1,
 						},
 					],
 				},
@@ -99,14 +115,15 @@ export default function NotebookLayout({
 					childrens: [
 						{
 							name: "Spring",
-							id: 194,
+							id: 1900000,
 							parentId: 121,
 							childrens: null,
 							notes: [
 								{
 									name: "Spring security",
-									id: 455454,
+									id: "455454",
 									archived: false,
+									directoryId: 1900000,
 								},
 							],
 						},
@@ -114,8 +131,9 @@ export default function NotebookLayout({
 					notes: [
 						{
 							name: "Spring security",
-							id: 455454,
+							id: "455454",
 							archived: false,
+							directoryId: 194,
 						},
 					],
 				},
@@ -123,13 +141,15 @@ export default function NotebookLayout({
 			notes: [
 				{
 					name: "Nota excluida 2",
-					id: 2,
+					id: "2",
 					archived: false,
+					directoryId: 1213,
 				},
 				{
 					name: "Nota excluida 2",
-					id: 3,
+					id: "3",
 					archived: false,
+					directoryId: 4667,
 				},
 			],
 		},
@@ -142,13 +162,15 @@ export default function NotebookLayout({
 			notes: [
 				{
 					name: "Nota excluida 2",
-					id: 5,
+					id: "5",
 					archived: false,
+					directoryId: 99898,
 				},
 				{
 					name: "Nota excluida 2",
-					id: 10,
+					id: "10",
 					archived: false,
+					directoryId: 87776762,
 				},
 			],
 		},
@@ -173,13 +195,15 @@ export default function NotebookLayout({
 
 	return (
 		<SidebarProvider>
-			<AppSidebar
-				tags={tags}
-				notifications={notifications}
-				notesWithoutDir={notas}
-				directores={dirs}
-				userData={data}
-			/>
+			<Suspense fallback={<Skeleton />}>
+				<AppSidebar
+					tags={tags}
+					notifications={notifications}
+					notesWithoutDir={notas}
+					directores={directories}
+					userData={data}
+				/>
+			</Suspense>
 			<main>
 				<SidebarTrigger />
 				{children}

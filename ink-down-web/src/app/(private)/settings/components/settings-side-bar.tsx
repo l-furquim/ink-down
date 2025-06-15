@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Bell, Globe, Menu, Paperclip, Paintbrush } from "lucide-react";
+import { Bell, Globe, Menu, Paperclip, Paintbrush, ArrowLeft } from "lucide-react";
 import {
 	Sidebar,
 	SidebarContent,
@@ -28,7 +28,9 @@ export function SettingsSidebar({ option }: { option: string }) {
 	return (
 		<Sidebar>
 			<SidebarHeader>
-				<h1>Settings</h1>
+				<Link className="pt-2 pl-2" href={"/notebook"}>
+					<ArrowLeft />
+				</Link>
 			</SidebarHeader>
 			<SidebarContent>
 				<SidebarGroup>

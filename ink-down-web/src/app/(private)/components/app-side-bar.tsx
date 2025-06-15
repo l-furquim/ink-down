@@ -10,11 +10,7 @@ import {
 	SidebarRail,
 } from "@/components/ui/sidebar";
 import { ArchivedNotes } from "./archived/archived-notes";
-import type {
-	DirectoryDataType,
-	NoteDataType,
-	TagsDataType,
-} from "@/app/@types/note-types";
+import type { NoteDataType, TagsDataType } from "@/app/@types/note-types";
 import { SearchButton } from "@/app/components/search-button";
 import type { NotificationDataType } from "@/app/@types/notification-types";
 import { Notifications } from "./notifications";
@@ -32,12 +28,13 @@ import { NotesList } from "./notes/note-list";
 import { TagsProvider } from "@/providers/tags-provider";
 import { NoteProvider } from "@/providers/note-provider";
 import { DirectoryProvider } from "@/providers/directories-provider";
+import type { DirectoryWithChildren } from "@/app/actions/get-directories";
 
 interface AppSidebarProps {
 	userData: UserDataType;
 	notesWithoutDir: NoteDataType[];
 	notifications: NotificationDataType[];
-	directores: DirectoryDataType[];
+	directores: DirectoryWithChildren[];
 	tags: TagsDataType[];
 }
 
@@ -54,8 +51,6 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 		...notesNotArchived,
 		...directores.flatMap((dir) => dir.notes),
 	];
-
-	console.log(notes);
 
 	return (
 		<Sidebar>

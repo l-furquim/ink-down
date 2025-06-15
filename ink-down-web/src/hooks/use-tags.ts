@@ -16,7 +16,6 @@ export const useTagsActions = (initialTags: TagsDataType[]) => {
 		};
 		setTags((prev) => [...prev, newTag]);
 
-		console.log(tags);
 	}, []);
 
 	const handleRenameTag = useCallback((id: number, newName: string) => {
