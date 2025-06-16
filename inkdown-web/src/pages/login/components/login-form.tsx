@@ -1,7 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { GithubButton } from "@/components/github-button";
-import { GoogleButton } from "@/components/google-button";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,16 +36,6 @@ export const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit(handleLoginSubmit)} className="w-120 flex flex-col items-center justify-start pt-10 h-150 border-[1px] border-muted-foreground rounded-md p-5">
-      <span className="flex space-x-4 items-center">
-        <h1 className="font-bold text-3xl">Entrar</h1>
-      </span>
-      <p className="pt-4">
-        Entre com a suas redes socias ou sua conta Ink down
-      </p>
-      <span className="flex space-x-5 items-center pt-12">
-        <GithubButton />
-        <GoogleButton />
-      </span>
       <div className="flex w-full pt-4 items-center gap-4">
         <hr className="flex-grow border-zinc-800" />
         <span className="text-zinc-800 text-sm">ou</span>

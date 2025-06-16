@@ -18,13 +18,15 @@ app.register(fastifyJwt, {
 app.register(cors, {
   origin: env.CONSUMER_URL,
   methods: ['GET', 'POST', 'OPTIONS'],
+  credentials: true,
 });
 
 const publicRoutes = [
   '/authors/create',
   '/authors/code',
   '/authors/auth',
-  '/authors/code/validate'
+  '/authors/code/validate',
+  '/api/auth/*'
 ];
 
 
@@ -34,6 +36,10 @@ app.addHook('preHandler', async (request: FastifyRequest, reply: FastifyReply) =
   console.log(request.originalUrl);
 
   if (publicRoutes.includes(request.originalUrl ?? request.url)) {
+    return;
+  };
+
+  if(request.originalUrl.includes("/api/auth")) {
     return;
   }
 
