@@ -5,7 +5,7 @@ import z from "zod";
 
 export async function validateCode(request: FastifyRequest, reply: FastifyReply){
   const validateCodeSchema = z.object({
-    token: z.string().jwt(),
+    token: z.string(),
     code: z.string(),
   });
 

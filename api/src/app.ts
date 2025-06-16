@@ -23,7 +23,8 @@ app.register(cors, {
 const publicRoutes = [
   '/authors/create',
   '/authors/code',
-  '/authors/auth'
+  '/authors/auth',
+  '/authors/code/validate'
 ];
 
 
