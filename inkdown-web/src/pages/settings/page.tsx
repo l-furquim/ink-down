@@ -47,7 +47,7 @@ export default function SettingsPage() {
 								<h3 className="font-semibold">Meus temas</h3>
 								<span className="w-full flex justify-between">
 									<p className="text-muted-foreground text-sm">
-										Baixe temass da comunidade ou use os temas padrões do ink down.
+										Baixe temas da comunidade ou use os temas padrões do ink down.
 									</p>
 									<ModeToggle />
 								</span>

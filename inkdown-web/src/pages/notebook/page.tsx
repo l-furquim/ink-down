@@ -7,6 +7,8 @@ import { CircleDotIcon } from "lucide-react";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { TitleEditor } from "./components/title-editor";
 import { queryClient } from "@/lib/react-query";
+import type { NoteDataType } from "@/features/notes/types/note-types";
+import type { DirectoryWithChildren } from "@/features/notes/types/directory-types";
 
 export default function NotebookPage() {
 	const [searchParams] = useSearchParams();
@@ -18,22 +20,50 @@ export default function NotebookPage() {
 		queryKey: ["get-note-content", id],
 		enabled: Boolean(id),
 		retry: false,
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
+		refetchOnReconnect: false,
 	});
 
 	const updateNoteMutation = useMutation({
 		mutationFn: ({ id, title, content }: { id: string; title: string; content: string }) =>
-		updateNoteData(id, title, content),
+			updateNoteData(id, title, content),
 		onSuccess: (_, variables) => {
 			queryClient.setQueryData(["get-note-content", variables.id], (old: any) => ({
 				...old,
 				title: variables.title,
 				content: variables.content,
 			}));
+
+			queryClient.setQueryData(["get-author-directories"], (oldData: any) => {
+				if (!oldData) return oldData;
+
+				const updateNote = (noteList: NoteDataType[]) =>
+					noteList.map((note) =>
+						note.id === variables.id
+							? { ...note, title: variables.title, content: variables.content }
+							: note
+					);
+
+				const updateDirectories = (dirs: DirectoryWithChildren[]): DirectoryWithChildren[] =>
+					dirs.map((dir) => ({
+						...dir,
+						notes: updateNote(dir.notes),
+						childrens: dir.childrens ? updateDirectories(dir.childrens) : [],
+					}));
+
+				return {
+					...oldData,
+					notes: updateNote(oldData.notes),
+					directories: updateDirectories(oldData.directories),
+				};
+			});
 		},
 		onError: (error) => {
 			console.error("Erro ao atualizar nota:", error);
 		},
 	});
+	
 
 	const [editingNote, setEditingNote] = useState(false);
 	const [noteTitle, setNoteTitle] = useState("");
@@ -85,7 +115,10 @@ export default function NotebookPage() {
 						className="h-full border-none outline-none focus:outline-none focus:ring-0 ring-0 resize-none"
 						value={noteContent}
 						ref={contentRef}
-						onChange={(e) => setNoteContent(e.currentTarget.value)}
+						onChange={(e) => {
+							setNoteContent(e.currentTarget.value);
+							setEditingNote(true);
+						}}
 					>
 
 					</textarea>

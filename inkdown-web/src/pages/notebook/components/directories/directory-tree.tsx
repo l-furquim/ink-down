@@ -7,7 +7,7 @@ import { DirectoryContext } from "./directory-context";
 import { hotkeysCoreFeature, renamingFeature, selectionFeature, syncDataLoaderFeature } from "@headless-tree/core";
 import type { NoteDataType } from "@/features/notes/types/note-types";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
 
 export interface DirectoryItem {
@@ -20,15 +20,14 @@ export interface DirectoryItem {
 export function DirectoryTree({
   directories,
   aloneNotes,
-  onNoteSelect,
   onRenameDirectory,
 }: {
   directories: DirectoryDataType[],
   aloneNotes: NoteDataType[],
-  onNoteSelect: (noteId: string) => void,
   onRenameDirectory: (data: { id: number; newName: string }) => void,
 }) {
-  const items = buildItemsFromTree(directories, aloneNotes);
+
+  const items = useMemo(() => buildItemsFromTree(directories, aloneNotes), [directories, aloneNotes]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const tree = useTree<DirectoryItem>({
@@ -66,11 +65,15 @@ export function DirectoryTree({
       selectionFeature,
     ],
   });
-
+  // Rebuida a arvore do zero, porem quando o estado inteiro muda.
+  /* useEffect(() => {
+    tree.rebuildTree();
+  }, [items]);
+ */
   return (
     <div className="flex h-full flex-col gap-2 *:first:grow">
-      <ScrollArea className="max-h-[calc(110vh-20rem)]">
-        <Tree indent={indent} tree={tree} className="bg-none">
+      <ScrollArea className="max-h-[calc(110vh-20rem)] overflow-hidden overflow-scroll">
+        <Tree indent={indent} tree={tree} className="bg-none"  >
           {tree.getItems().map((item) => {
             const itemData = item.getItemData();
             const isDir = itemData.type === "directory";
@@ -90,7 +93,7 @@ export function DirectoryTree({
                     item={item}
                     style={{ cursor: "default" }}
                   >
-                    <TreeItemLabel className="bg-zinc-900">
+                    <TreeItemLabel className="dark:bg-zinc-900 bg-sidebar">
                       <span className="flex items-center gap-2">
                         {item.isExpanded() ? (
                           <FolderOpenIcon className="text-muted-foreground pointer-events-none size-4" />
@@ -111,15 +114,15 @@ export function DirectoryTree({
               );
             }
             return (
-              <Link to={`/notebook?id=${itemData.id.replace('note-', '')}`}>
+              <Link key={item.getId()} to={`/notebook?id=${itemData.id.replace('note-', '')}`}>
+                
                 <TreeItem
                   className="bg-none"
-                  key={item.getId()}
                   item={item}
 
                   style={{ cursor: "pointer" }}
                 >
-                  <TreeItemLabel className="bg-zinc-900">
+                  <TreeItemLabel className="dark:bg-zinc-900 bg-sidebar">
                     <span className="flex items-center gap-2">
                       <FileIcon className="text-muted-foreground pointer-events-none size-4" />
                       {itemData.name}

@@ -12,7 +12,7 @@ import { UserNav } from "./user-nav";
 import { useQuery } from "@tanstack/react-query";
 import { getAuthorDirectoriesWithChildrenNotes, updateDirectoryTitle } from "@/features/notes/services/note-service";
 import { notifications, userData } from "@/data";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DirectoryTree } from "./directories/directory-tree";
 import type { DirectoryWithChildren } from "@/features/notes/types/directory-types";
@@ -25,16 +25,19 @@ import { ArchivedNotes } from "./archived/archived-notes";
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useMemo } from "react";
 
 export const AppSidebar = () => {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
-	const { data, isLoading, isError, error } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryKey: ["get-author-directories"],
 		queryFn: getAuthorDirectoriesWithChildrenNotes,
-		refetchOnMount: false,
+		retry: false,
 		refetchOnWindowFocus: false,
+		refetchOnMount: false,
+		refetchOnReconnect: false,
 	});
 
 	const renameMutation = useMutation({
@@ -58,6 +61,14 @@ export const AppSidebar = () => {
 		}
 	});
 
+	const notesForSearch = useMemo(() => {
+		if (!data) return [];
+		return [
+			...data.notes.filter((n) => !n.archived),
+			...data.directories.flatMap((dir) => dir.notes)
+		];
+	}, [data]);
+
 	return (
 		<Sidebar>
 			{isLoading && (
@@ -78,15 +89,12 @@ export const AppSidebar = () => {
 					<SidebarHeader className="pt-5 space-y-2">
 						<div className="flex space-x-2 items-center">
 							<SidebarTrigger className="w-8 h-8" />
-							<Button variant={"ghost"} className={cn("size-7")}>
-								<Settings />
-							</Button>
+							<Link to={"/settings?option=Editor"} className={"flex items-center"}>
+								<Settings size={18}/>
+							</Link>
 						</div>
 						<SearchButton notes={
-							[
-								...data.notes.filter((n) => !n.archived),
-								...data.directories.flatMap((dir) => dir.notes)
-							]
+							notesForSearch
 						} />
 						<span className="pl-2 list-none space-y-2">
 							<Notifications notifications={notifications as NotificationDataType[]} />
@@ -98,7 +106,6 @@ export const AppSidebar = () => {
 
 							{data && (
 								<DirectoryTree
-									onNoteSelect={(id: string) => navigate(`/note?id=${id}`)}
 									directories={data.directories}
 									aloneNotes={data.notes}
 									onRenameDirectory={renameMutation.mutate}
