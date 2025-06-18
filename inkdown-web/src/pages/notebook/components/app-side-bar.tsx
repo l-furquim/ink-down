@@ -1,102 +1,107 @@
-import type { UserDataType } from "@/features/author/types/user-types";
 import {
 	Sidebar,
 	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupContent,
-	SidebarGroupLabel,
 	SidebarHeader,
-	SidebarMenuButton,
 	SidebarRail,
 } from "@/components/ui/sidebar";
-import { ArchivedNotes } from "./archived/archived-notes";
-import type { NoteDataType, TagsDataType } from "@/@types/note-types";
-import { SearchButton } from "@/components/search-button";
-import type { NotificationDataType } from "@/@types/notification-types";
 import { Notifications } from "./notifications";
-import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { ChevronUp } from "lucide-react";
-import { TagList } from "./tags/tags-list";
-import { NewTagButton } from "./tags/new-tag-button";
 import { UserNav } from "./user-nav";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { NotesList } from "./notes/note-list";
-import { TagsProvider } from "@/providers/tags-provider";
-import { NoteProvider } from "@/providers/note-provider";
-import { DirectoryProvider } from "@/providers/directories-provider";
-import type { DirectoryWithChildren } from "@/actions/get-directories";
+import { useQuery } from "@tanstack/react-query";
+import { getAuthorDirectoriesWithChildrenNotes, updateDirectoryTitle } from "@/features/notes/services/note-service";
+import { notifications, userData } from "@/data";
+import { useNavigate } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton";
+import { DirectoryTree } from "./directories/directory-tree";
+import type { DirectoryWithChildren } from "@/features/notes/types/directory-types";
+import type { NotificationDataType } from "@/features/notification/types/notification-types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { renameDirectory } from "@/features/notes/services/note-service";
+import type { NoteDataType } from "@/features/notes/types/note-types";
+import { SearchButton } from "@/components/search-button";
+import { ArchivedNotes } from "./archived/archived-notes";
 
-interface AppSidebarProps {
-	userData: UserDataType;
-	notesWithoutDir: NoteDataType[];
-	notifications: NotificationDataType[];
-	directores: DirectoryWithChildren[];
-	tags: TagsDataType[];
-}
+export const AppSidebar = () => {
+	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
-export const AppSidebar: React.FC<AppSidebarProps> = ({
-	userData,
-	notesWithoutDir,
-	directores,
-	notifications,
-	tags,
-}) => {
-	const notesArquived = notesWithoutDir.filter((n) => n.archived);
-	const notesNotArchived = notesWithoutDir.filter((n) => !n.archived);
-	const notes = [
-		...notesNotArchived,
-		...directores.flatMap((dir) => dir.notes),
-	];
+	const { data, isLoading, isError, error } = useQuery({
+		queryKey: ["get-author-directories"],
+		queryFn: getAuthorDirectoriesWithChildrenNotes,
+		refetchOnMount: false,
+		refetchOnWindowFocus: false,
+	});
+
+	const renameMutation = useMutation({
+		mutationFn: ({ id, newName }: { id: number; newName: string }) =>
+			renameDirectory(newName, id),
+		onSuccess: (_, variables) => {
+			queryClient.setQueryData(["get-author-directories"],
+				(oldData: { directories: DirectoryWithChildren[]; notes: NoteDataType[] } | undefined) => {
+					if (!oldData) return oldData;
+
+					return {
+						...oldData,
+						directories: updateDirectoryTitle(oldData.directories, variables.id, variables.newName),
+					};
+				}
+			);
+		},
+		onError: (error) => {
+			console.error("Failed to rename directory:", error);
+			queryClient.invalidateQueries({ queryKey: ["get-author-directories"] });
+		}
+	});
 
 	return (
 		<Sidebar>
-			<SidebarHeader className="pt-5 space-y-2">
-				<SearchButton notes={notes} />
-				<span className="pl-2 list-none space-y-2">
-					<Notifications notifications={notifications} />
-					<ArchivedNotes data={notesArquived} />
-				</span>
-			</SidebarHeader>
-			<ScrollArea className="max-h-[calc(110vh-20rem)] ">
-				<SidebarGroup>
-					<SidebarGroupLabel className="text-indigo-400">
-						Notas
-					</SidebarGroupLabel>
-					<DirectoryProvider initialDirectories={directores}>
-						<NoteProvider initialNotes={notes}>
-							<NotesList />
-						</NoteProvider>
-					</DirectoryProvider>
-				</SidebarGroup>
-				<SidebarGroup>
-					<SidebarGroupContent className="space-y-3 rounded-md ">
-						<TagsProvider initialTags={tags}>
-							<Collapsible className="group">
-								<CollapsibleTrigger asChild>
-									<SidebarMenuButton className="pl-0">
-										<SidebarGroupLabel className="text-indigo-400 flex space-x-3 w-full">
-											<span>Tags</span>
-											<ChevronUp className="transition-transform duration-200 group-data-[state=open]:rotate-180 hover:cursor-pointer" />
-											<NewTagButton />
-										</SidebarGroupLabel>
-									</SidebarMenuButton>
-								</CollapsibleTrigger>
-								<CollapsibleContent className="pl-3">
-									<TagList />
-								</CollapsibleContent>
-							</Collapsible>
-						</TagsProvider>
-					</SidebarGroupContent>
-				</SidebarGroup>
-			</ScrollArea>
+			{isLoading && (
+				<div className="space-y-2 w-full pt-20 flex items-center flex-col">
+					<Skeleton className="h-6 w-[80%]" />
+					<Skeleton className="h-6 w-[80%]" />
+					<Skeleton className="h-6 w-[80%]" />
+					<Skeleton className="h-6 w-[80%]" />
+					<Skeleton className="h-6 w-[80%]" />
+					<Skeleton className="h-6 w-[80%]" />
+					<Skeleton className="h-6 w-[80%]" />
+					<Skeleton className="h-6 w-[80%]" />
+					<Skeleton className="h-6 w-[80%]" />
+				</div>
+			)}
+			{data && (
+				<>
+					<SidebarHeader className="pt-5 space-y-2">
+						<SearchButton notes={
+							[
+								...data.notes.filter((n) => !n.archived),
+								...data.directories.flatMap((dir) => dir.notes)
+							]
+						} />
+						<span className="pl-2 list-none space-y-2">
+							<Notifications notifications={notifications as NotificationDataType[]} />
+							<ArchivedNotes data={data.notes.filter((n) => n.archived)} />
+						</span>
+					</SidebarHeader>
+					<SidebarGroup>
+						<SidebarGroupContent>
+
+							{data && (
+								<DirectoryTree
+									onNoteSelect={(id: string) => navigate(`/note?id=${id}`)}
+									directories={data.directories}
+									aloneNotes={data.notes}
+									onRenameDirectory={renameMutation.mutate}
+								/>
+							)}
+						</SidebarGroupContent>
+					</SidebarGroup>
+				</>
+			)}
 			<SidebarFooter>
 				<UserNav user={userData} />
 			</SidebarFooter>
 			<SidebarRail />
-		</Sidebar>
+		</Sidebar >
 	);
 };

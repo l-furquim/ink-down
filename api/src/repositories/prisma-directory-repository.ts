@@ -30,13 +30,13 @@ export class PrismaDirectoryRepository implements DirectoryRepository {
     })
   
   }
-  async renameDir(directory: Directory): Promise<void> {    
+  async renameDir(newName: string, id: number): Promise<void> {    
     await prisma.directory.update({
       data: {
-        title: directory.title
+        title: newName
       },
       where: {
-        id: directory.id
+        id,
       },
     });
   }

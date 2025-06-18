@@ -1,4 +1,4 @@
-import type { NotificationDataType } from "@/app/@types/notification-types";
+import type { NotificationDataType } from "@/features/notification/types/notification-types";
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { Bell, BellDot } from "lucide-react";
 import type React from "react";

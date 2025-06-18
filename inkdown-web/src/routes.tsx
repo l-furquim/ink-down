@@ -10,6 +10,7 @@ import LoginPage from "./pages/login/page";
 import SettingsLayout from "./pages/settings/layout";
 import { ThemeProvider } from "./providers/theme-provider";
 import NotebookLayout from "./pages/notebook/layout";
+import NotFoundPage from "./pages/notefound-page";
 
 export const router = createBrowserRouter([
   {
@@ -43,5 +44,9 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage/>
+  },
+  {
+    path: "/notfound",
+    element: <NotFoundPage/>
   }
 ]);

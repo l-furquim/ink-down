@@ -1,4 +1,5 @@
-import axios, { type AxiosInstance } from "axios";
+import axios, { type AxiosError, type AxiosInstance } from "axios";
+import { redirect } from "react-router-dom";
 
 export const api: AxiosInstance = axios.create({
 	baseURL: "http://localhost:3333/",
@@ -14,6 +15,22 @@ api.interceptors.response.use(
 
 	return Promise.resolve(response);
 }, (error) => {
+	const axiosError = error as AxiosError;
+
+	console.log(axiosError);
+
+	if(axiosError.response) {
+		if(axiosError.response.status === 403) {
+			window.location.href = "/login";
+		};
+
+		if(axiosError.status === 404) {
+			const { message } = axiosError.response.data as ApiErrorResponse;
+
+			window.location.href = `/notfound?message=${message}`;
+		}
+	};
+
 	return Promise.reject(error);
 })
 
@@ -24,3 +41,7 @@ export interface ApiResponse<TData = unknown> {
   token?: string;
   statusCode?: number;
 };
+
+export interface ApiErrorResponse {
+	message: string,
+}

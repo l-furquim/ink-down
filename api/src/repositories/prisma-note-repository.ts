@@ -77,4 +77,12 @@ export class PrismaNoteRepository implements NoteRepository{
         data,
       });
   };
+  async findAuthorsWithoutDir(authorId: string): Promise<Note[]> {
+    return await prisma.note.findMany({
+      where: {
+        author_id: authorId,
+        directoryId: null,
+      },
+    });
+  }
 }

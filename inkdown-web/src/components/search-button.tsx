@@ -4,12 +4,9 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Notebook, Search } from "lucide-react";
 import {
-	Calculator,
-	Calendar,
 	Palette,
 	PenBox,
 	Settings,
-	Smile,
 	User,
 } from "lucide-react";
 
@@ -23,7 +20,7 @@ import {
 	CommandSeparator,
 	CommandShortcut,
 } from "@/components/ui/command";
-import type { NoteDataType } from "../@types/note-types";
+import type { NoteDataType } from "@/features/notes/types/note-types";
 import { Link } from "react-router-dom";
 
 interface SearchButtonProps {
@@ -32,6 +29,8 @@ interface SearchButtonProps {
 
 export const SearchButton = ({ notes }: SearchButtonProps) => {
 	const [open, setOpen] = React.useState(false);
+
+	console.log(notes);
 
 	React.useEffect(() => {
 		const down = (e: KeyboardEvent) => {
@@ -69,7 +68,7 @@ export const SearchButton = ({ notes }: SearchButtonProps) => {
 								onClick={() => setOpen(false)}
 								key={note.id}
 								className="hover:cursor-pointer"
-								to={`?note=${note.title}&id=${note.id}`}
+								to={`?id=${note.id}`}
 							>
 								<CommandItem>
 									<Notebook />

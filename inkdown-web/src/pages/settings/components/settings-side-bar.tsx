@@ -1,10 +1,10 @@
 import {
-	Bell,
 	Globe,
 	Menu,
 	Paperclip,
 	Paintbrush,
 	ArrowLeft,
+	Palette,
 } from "lucide-react";
 import {
 	Sidebar,
@@ -18,7 +18,6 @@ import {
 	SidebarMenuItem,
 	SidebarRail,
 } from "@/components/ui/sidebar";
-import { ModeToggle } from "@/components/theme-toggle";
 import { Link } from "react-router-dom";
 
 const data = {
@@ -27,15 +26,16 @@ const data = {
 		{ name: "Privacidade", icon: Paintbrush },
 		{ name: "Idiomas", icon: Globe },
 		{ name: "Documentação", icon: Paperclip },
+		{ name: "Temas", icon: Palette }
 	],
 };
 
 export function SettingsSidebar({ option }: { option: string }) {
 	return (
-		<Sidebar>
+		<Sidebar variant="floating">
 			<SidebarHeader>
 				<Link className="pt-2 pl-2"  to={"/notebook"}>
-					<ArrowLeft />
+					<ArrowLeft size={19} />
 				</Link>
 			</SidebarHeader>
 			<SidebarContent>
@@ -55,7 +55,6 @@ export function SettingsSidebar({ option }: { option: string }) {
 									</SidebarMenuItem>
 								</Link>
 							))}
-							<ModeToggle />
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>

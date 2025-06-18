@@ -3,7 +3,6 @@ import type { AxiosError } from "axios";
 import type { ConfirmCode, ErrorMessage, LoginData, SendCodeResponse, SignUpData } from "../types/user-types";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 export async function signUp({
   name,

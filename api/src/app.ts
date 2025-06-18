@@ -17,7 +17,7 @@ app.register(fastifyJwt, {
 
 app.register(cors, {
   origin: env.CONSUMER_URL,
-  methods: ['GET', 'POST', 'OPTIONS'],
+  methods: ['GET', 'POST', 'OPTIONS', 'PUT'],
   credentials: true,
 });
 

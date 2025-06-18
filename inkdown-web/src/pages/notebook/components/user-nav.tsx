@@ -82,7 +82,7 @@ export function UserNav({
 								</Link>
 							</DropdownMenuItem>
 							<DropdownMenuItem className="hover:cursor-pointer" asChild>
-								<Link to="/settings">
+								<Link to="/settings?option=Editor">
 									<Settings />
 									<span>Configurações</span>
 								</Link>

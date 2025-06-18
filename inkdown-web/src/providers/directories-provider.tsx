@@ -1,8 +1,9 @@
 "use client";
 
-import type { DirectoryDataType } from "@/app/@types/note-types";
+import type { DirectoryDataType } from "@/features/notes/types/directory-types";
 import { useDirectoriesActions } from "@/hooks/use-directories";
 import { createContext, useContext } from "react";
+import type { ReactNode } from "react";
 
 type DirectoryContextType = {
 	directories: DirectoryDataType[];
@@ -18,36 +19,20 @@ const DirectoriesContext = createContext<DirectoryContextType | undefined>(
 	undefined,
 );
 
+type DirectoryProviderProps = {
+	initialDirectories: DirectoryDataType[];
+	children: ReactNode | ((context: DirectoryContextType) => ReactNode);
+};
+
 export const DirectoryProvider = ({
 	initialDirectories,
 	children,
-}: {
-	initialDirectories: DirectoryDataType[];
-	children: React.ReactNode;
-}) => {
-	const {
-		directories,
-		handleDeleteDirectory,
-		handleNewDirectory,
-		handleRenameDirectory,
-		editingId,
-		startEditing,
-		stopEditing,
-	} = useDirectoriesActions(initialDirectories);
+}: DirectoryProviderProps) => {
+	const contextValue = useDirectoriesActions(initialDirectories);
 
 	return (
-		<DirectoriesContext.Provider
-			value={{
-				directories,
-				handleDeleteDirectory,
-				handleNewDirectory,
-				handleRenameDirectory,
-				startEditing,
-				stopEditing,
-				editingId,
-			}}
-		>
-			{children}
+		<DirectoriesContext.Provider value={contextValue}>
+			{typeof children === "function" ? children(contextValue) : children}
 		</DirectoriesContext.Provider>
 	);
 };

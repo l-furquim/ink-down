@@ -25,10 +25,8 @@ export class RenameDirectoryUseCase {
     if(directory.authorId !== authorId){
       throw new UnnauthorizedDirectoryError("Cannot rename a directory that does not belong to the author with id " + authorId);
     }
-
-    directory.title = newTitle;
-
-    await this.repo.renameDir(directory);
+    console.log(newTitle, dirId);
+    await this.repo.renameDir(newTitle, dirId);
   }
 
 }

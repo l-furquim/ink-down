@@ -1,50 +1,44 @@
-"use client";
-
-import type { DirectoryDataType } from "@/app/@types/note-types";
+import type { DirectoryDataType } from "@/features/notes/types/directory-types";
 import { useState, useCallback } from "react";
 
+// Função recursiva para renomear diretórios aninhados
+function renameDirectoryRecursive(
+  dirs: DirectoryDataType[],
+  id: number,
+  newName: string,
+): DirectoryDataType[] {
+  return dirs.map((dir) => {
+    if (dir.id === id) {
+      return { ...dir, title: newName };
+    }
+    if (Array.isArray(dir.childrens) && dir.childrens.length > 0) {
+      return {
+        ...dir,
+        childrens: renameDirectoryRecursive(dir.childrens, id, newName),
+      };
+    }
+    return dir;
+  });
+}
+
 export const useDirectoriesActions = (
-	initialDirectories: DirectoryDataType[],
+  initialDirectories: DirectoryDataType[]
 ) => {
-	const [directories, setDirectories] = useState(initialDirectories);
+  const [directories, setDirectories] = useState(initialDirectories);
+  const [editingId, setEditingId] = useState<number | null>(null);
 
-	const [editingId, setEditingId] = useState<number | null>(null);
+  const startEditing = (id: number) => setEditingId(id);
+  const stopEditing = () => setEditingId(null);
 
-	const startEditing = (id: number) => setEditingId(id);
-	const stopEditing = () => setEditingId(null);
+  const handleRenameDirectory = useCallback((newName: string, id: number) => {
+    setDirectories((prev) => renameDirectoryRecursive(prev, id, newName));
+  }, []);
 
-	const handleNewDirectory = useCallback(
-		(name: string, parentId: number | null) => {
-			const newDir: DirectoryDataType = {
-				id: Date.now(),
-				title: name,
-				notes: [],
-				childrens: [],
-				parentId,
-			};
-
-			setDirectories((prevDirs) => [...prevDirs, newDir]);
-		},
-		[],
-	);
-
-	const handleRenameDirectory = useCallback((newName: string, id: number) => {
-		setDirectories((prev) =>
-			prev.map((dic) => (dic.id === id ? { ...dic, name: newName } : dic)),
-		);
-	}, []);
-
-	const handleDeleteDirectory = useCallback((id: number) => {
-		setDirectories((prev) => prev.filter((dir) => dir.id !== id));
-	}, []);
-
-	return {
-		directories,
-		handleNewDirectory,
-		handleRenameDirectory,
-		handleDeleteDirectory,
-		editingId,
-		startEditing,
-		stopEditing,
-	};
+  return {
+    directories,
+    handleRenameDirectory,
+    editingId,
+    startEditing,
+    stopEditing,
+  };
 };
