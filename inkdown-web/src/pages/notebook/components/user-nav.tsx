@@ -29,7 +29,7 @@ export function UserNav({
 	user: UserDataType;
 }) {
 	return (
-		<SidebarMenu className="absolute bottom-0 ">
+		<SidebarMenu className="absolute bottom-0 pr-5">
 			<SidebarMenuItem>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>

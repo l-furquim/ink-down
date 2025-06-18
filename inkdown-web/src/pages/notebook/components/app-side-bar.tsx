@@ -5,6 +5,7 @@ import {
 	SidebarGroupContent,
 	SidebarHeader,
 	SidebarRail,
+	SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Notifications } from "./notifications";
 import { UserNav } from "./user-nav";
@@ -21,6 +22,9 @@ import { renameDirectory } from "@/features/notes/services/note-service";
 import type { NoteDataType } from "@/features/notes/types/note-types";
 import { SearchButton } from "@/components/search-button";
 import { ArchivedNotes } from "./archived/archived-notes";
+import { Button } from "@/components/ui/button";
+import { Settings } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export const AppSidebar = () => {
 	const queryClient = useQueryClient();
@@ -72,6 +76,12 @@ export const AppSidebar = () => {
 			{data && (
 				<>
 					<SidebarHeader className="pt-5 space-y-2">
+						<div className="flex space-x-2 items-center">
+							<SidebarTrigger className="w-8 h-8" />
+							<Button variant={"ghost"} className={cn("size-7")}>
+								<Settings />
+							</Button>
+						</div>
 						<SearchButton notes={
 							[
 								...data.notes.filter((n) => !n.archived),

@@ -8,8 +8,7 @@ export default function NotebookLayout() {
 		<ThemeProvider>
 			<SidebarProvider>
 				<AppSidebar />
-				<main>
-					<SidebarTrigger />
+				<main className="w-full ">
 					<Outlet />
 				</main>
 			</SidebarProvider>

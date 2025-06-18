@@ -3,12 +3,12 @@ import type { PrismaNoteRepository } from "@/repositories/prisma-note-repository
 import { InvalidDataError } from "../errors/invalid-data-error";
 
 interface UpdateNoteRequest {
+  id: string,
   title?: string,
   content?: string,
   type?: string,
   icon?: string,
-  id: string,
-  archived: boolean
+  archived?: boolean
 }
 
 export class UpdateNoteUseCase{

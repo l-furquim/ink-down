@@ -3,7 +3,23 @@ import type { DirectoryWithChildren, GetAuthorDirectoriesResponse } from "../typ
 import type { AxiosError } from "axios";
 import { type GetNoteContentResponse } from "../types/note-types";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMzlkYWZiNC0yZWZkLTQxMmUtYmRjYS04OGZhMTU0MjMxNDEiLCJpYXQiOjE3NTAyNzEzNjQsImV4cCI6MTc1MDI3ODU2NH0.6Qyw6t7XdogMAr1v3ypMvxvM7RPbQp5falKgWHjvHd0";
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMzlkYWZiNC0yZWZkLTQxMmUtYmRjYS04OGZhMTU0MjMxNDEiLCJpYXQiOjE3NTAyNzg2MTIsImV4cCI6MTc1MDI4NTgxMn0.q6q9PUnvWdkeMwMkVvL5szDHRQJgwJfmQGsTzyBCOIw";
+
+export async function updateNoteData(id: string,title: string, content: string) {
+  console.log(id, title, content);
+
+  const response = await api.put("notes/update", {
+    id,
+    title,
+    content,
+  }, {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+  });
+
+  console.log(response);
+}
 
 export function updateDirectoryTitle(dirs: DirectoryWithChildren[], id: number, newName: string): DirectoryWithChildren[] {
   return dirs.map(dir => {

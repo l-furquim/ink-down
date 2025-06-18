@@ -10,7 +10,7 @@ export async function updateNote(request: FastifyRequest, reply: FastifyReply) {
     content: z.string().optional(),
     icon: z.string().optional(),
     type: z.enum(["PRIVATE", "PUBLIC"]).optional(),
-    archived: z.boolean(),
+    archived: z.boolean().optional(),
   });
 
   const { title, content, type, id, icon, archived } = updateNoteSchema.parse(request.body);
